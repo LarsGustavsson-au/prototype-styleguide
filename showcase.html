@@ -16,6 +16,9 @@
   <!-- Remix Icons -->
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">
 
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <!-- Apply Balsamiq Sans globally -->
   <script>
     tailwind.config = {
@@ -112,6 +115,29 @@
       /* ── Footer ── */
       .footer          { @apply bg-zinc-800 text-zinc-400 px-8 py-6 flex items-center justify-between text-sm; }
       .footer-link     { @apply hover:text-white transition-colors duration-150; }
+
+      /* ── Tables ── */
+      .table-simple       { @apply w-auto text-sm border-collapse; }
+      .table-simple th    { @apply font-bold text-zinc-700 text-left py-2 px-3 border-b border-gray-300; }
+      .table-simple td    { @apply text-zinc-600 py-2 px-3; }
+      .table-simple .table-totals td { @apply font-bold text-zinc-700 border-t border-gray-300; }
+      .table-num          { @apply text-right; }
+
+      .table-report       { @apply w-full text-sm border-collapse; }
+      .table-report th    { @apply font-bold text-left py-2.5 px-3 sticky top-0 bg-zinc-600 text-white; }
+      .table-report td    { @apply text-zinc-600 py-2 px-3; }
+      .table-report tbody tr:nth-child(even) { @apply bg-stone-50; }
+      .table-report tbody tr:nth-child(odd)  { @apply bg-white; }
+      .table-sort         { @apply ml-1 text-zinc-300; }
+
+      /* ── Content Sections ── */
+      .content-section        { @apply border border-stone-200 rounded-lg overflow-hidden; }
+      .content-section-header { @apply bg-zinc-700 text-white font-bold text-sm px-4 py-2; }
+      .content-section-body   { @apply bg-white px-4 py-4; }
+      .content-section-footer { @apply bg-stone-100 border-t border-stone-200 px-4 py-3; }
+
+      /* ── Field Row ── */
+      .field-row { @apply flex flex-col sm:flex-row gap-4; }
 
       /* ── Step Indicators ── */
       .step-active     { @apply w-7 h-7 rounded-full bg-emerald-700 text-white text-sm font-bold flex items-center justify-center; }
@@ -459,12 +485,217 @@
   </section>
 
   <!-- ============================================================
-       SECTION 3: CONFIRMATION / ERROR MODALS
+       SECTION 3: TABLES & CHARTS
   ============================================================ -->
   <section class="section-divider">
 
     <div class="section-label">
-      <p class="section-label-text">Section 3 — Confirmation / Error Modals</p>
+      <p class="section-label-text">Section 3 — Tables &amp; Charts</p>
+    </div>
+
+    <div class="px-8 py-10 space-y-10">
+
+      <!-- ── Small Table ── -->
+      <div>
+        <h3 class="type-heading mb-4">Small Table</h3>
+        <div class="card-standard inline-block">
+          <table class="table-simple">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Category</th>
+                <th class="table-num">Qty</th>
+                <th class="table-num">Unit Price</th>
+                <th class="table-num">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Widget A</td><td>Hardware</td><td class="table-num">12</td><td class="table-num">$4.00</td><td class="table-num">$48.00</td></tr>
+              <tr><td>Widget B</td><td>Software</td><td class="table-num">5</td><td class="table-num">$12.50</td><td class="table-num">$62.50</td></tr>
+              <tr><td>Widget C</td><td>Hardware</td><td class="table-num">8</td><td class="table-num">$7.25</td><td class="table-num">$58.00</td></tr>
+              <tr><td>Widget D</td><td>Services</td><td class="table-num">3</td><td class="table-num">$25.00</td><td class="table-num">$75.00</td></tr>
+              <tr class="table-totals"><td colspan="2">Total</td><td class="table-num">28</td><td class="table-num"></td><td class="table-num">$243.50</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ── Large Table ── -->
+      <div>
+        <h3 class="type-heading mb-4">Large Table (Report Style)</h3>
+        <div class="content-section">
+          <div class="content-section-header">Quarterly Sales Report</div>
+          <div class="content-section-body p-0 overflow-auto max-h-64">
+            <table class="table-report">
+              <thead>
+                <tr>
+                  <th>Product <i class="ri-arrow-up-s-line table-sort"></i></th>
+                  <th>Region</th>
+                  <th class="table-num">Units Sold <i class="ri-arrow-down-s-line table-sort"></i></th>
+                  <th class="table-num">Revenue</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Alpha Pro</td><td>North</td><td class="table-num">1,240</td><td class="table-num">$62,000</td><td><span class="inline-positive">On Track</span></td></tr>
+                <tr><td>Alpha Pro</td><td>South</td><td class="table-num">890</td><td class="table-num">$44,500</td><td><span class="inline-positive">On Track</span></td></tr>
+                <tr><td>Beta Lite</td><td>North</td><td class="table-num">2,100</td><td class="table-num">$42,000</td><td><span class="inline-warning">Review</span></td></tr>
+                <tr><td>Beta Lite</td><td>South</td><td class="table-num">1,560</td><td class="table-num">$31,200</td><td><span class="inline-positive">On Track</span></td></tr>
+                <tr><td>Gamma Edge</td><td>North</td><td class="table-num">430</td><td class="table-num">$34,400</td><td><span class="inline-negative">Behind</span></td></tr>
+                <tr><td>Gamma Edge</td><td>South</td><td class="table-num">610</td><td class="table-num">$48,800</td><td><span class="inline-positive">On Track</span></td></tr>
+                <tr><td>Delta Core</td><td>North</td><td class="table-num">3,200</td><td class="table-num">$96,000</td><td><span class="inline-positive">On Track</span></td></tr>
+                <tr><td>Delta Core</td><td>South</td><td class="table-num">2,750</td><td class="table-num">$82,500</td><td><span class="inline-warning">Review</span></td></tr>
+                <tr><td>Epsilon X</td><td>North</td><td class="table-num">180</td><td class="table-num">$27,000</td><td><span class="inline-negative">Behind</span></td></tr>
+                <tr><td>Epsilon X</td><td>South</td><td class="table-num">220</td><td class="table-num">$33,000</td><td><span class="inline-warning">Review</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="content-section-footer flex justify-between">
+            <span class="font-bold text-zinc-700">10 products · 2 regions</span>
+            <span class="font-bold text-zinc-700">Total Revenue: $501,400</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Charts ── -->
+      <div>
+        <h3 class="type-heading mb-4">Charts (Chart.js — Greyscale Palette)</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+          <!-- Bar Chart -->
+          <div class="card-standard">
+            <p class="type-body-emphasis mb-3">Bar Chart</p>
+            <canvas id="chart-bar"></canvas>
+          </div>
+
+          <!-- Line Chart -->
+          <div class="card-standard">
+            <p class="type-body-emphasis mb-3">Line Chart</p>
+            <canvas id="chart-line"></canvas>
+          </div>
+
+          <!-- Pie Chart -->
+          <div class="card-standard">
+            <p class="type-body-emphasis mb-3">Pie Chart</p>
+            <canvas id="chart-pie"></canvas>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ============================================================
+       SECTION 4: CONTENT SECTIONS & FIELD ROWS
+  ============================================================ -->
+  <section class="section-divider">
+
+    <div class="section-label">
+      <p class="section-label-text">Section 4 — Content Sections &amp; Field Rows</p>
+    </div>
+
+    <div class="px-8 py-10 space-y-10">
+
+      <div>
+        <h3 class="type-heading mb-4">Side-by-Side Content Sections with Field Rows</h3>
+        <p class="type-caption mb-6">Two content sections displayed side by side on wide screens, stacking vertically on mobile. Field rows group related inputs on a single line.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+          <!-- Personal Information -->
+          <div class="content-section">
+            <div class="content-section-header">Personal Information</div>
+            <div class="content-section-body space-y-4">
+              <!-- First + Last Name — equal width field row -->
+              <div class="field-row">
+                <div class="flex-1">
+                  <label class="form-label">First Name</label>
+                  <input type="text" class="form-input" placeholder="Jane">
+                </div>
+                <div class="flex-1">
+                  <label class="form-label">Last Name</label>
+                  <input type="text" class="form-input" placeholder="Smith">
+                </div>
+              </div>
+              <!-- Date of Birth — single field, full width -->
+              <div>
+                <label class="form-label">Date of Birth</label>
+                <input type="text" class="form-input" placeholder="DD/MM/YYYY">
+              </div>
+            </div>
+          </div>
+
+          <!-- Address -->
+          <div class="content-section">
+            <div class="content-section-header">Address</div>
+            <div class="content-section-body space-y-4">
+              <!-- Street — full width -->
+              <div>
+                <label class="form-label">Street</label>
+                <input type="text" class="form-input" placeholder="123 Main Street">
+              </div>
+              <!-- City + State + Postcode — unequal widths -->
+              <div class="field-row">
+                <div class="flex-[3]">
+                  <label class="form-label">City</label>
+                  <input type="text" class="form-input" placeholder="Melbourne">
+                </div>
+                <div class="flex-[2]">
+                  <label class="form-label">State</label>
+                  <input type="text" class="form-input" placeholder="VIC">
+                </div>
+                <div class="flex-[1]">
+                  <label class="form-label">Postcode</label>
+                  <input type="text" class="form-input" placeholder="3000">
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── Full-Width Single Content Section ── -->
+      <div>
+        <h3 class="type-heading mb-4">Full-Width Content Section</h3>
+        <p class="type-caption mb-6">A single content section spans the full width. Field rows and textareas work the same way inside.</p>
+
+        <div class="content-section">
+          <div class="content-section-header">Client Notes</div>
+          <div class="content-section-body space-y-4">
+            <!-- Client Name + Date of Birth — field row -->
+            <div class="field-row">
+              <div class="flex-1">
+                <label class="form-label">Client Name</label>
+                <input type="text" class="form-input" placeholder="Jane Smith">
+              </div>
+              <div class="flex-1">
+                <label class="form-label">Date of Birth</label>
+                <input type="text" class="form-input" placeholder="DD/MM/YYYY">
+              </div>
+            </div>
+            <!-- Notes textarea -->
+            <div>
+              <label class="form-label">Notes</label>
+              <textarea rows="4" class="form-textarea">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ============================================================
+       SECTION 5: CONFIRMATION / ERROR MODALS
+  ============================================================ -->
+  <section class="section-divider">
+
+    <div class="section-label">
+      <p class="section-label-text">Section 5 — Confirmation / Error Modals</p>
     </div>
 
     <div class="px-8 py-10">
@@ -518,12 +749,12 @@
   </section>
 
   <!-- ============================================================
-       SECTION 4: PROCEDURAL & DECISION MODALS
+       SECTION 6: PROCEDURAL & DECISION MODALS
   ============================================================ -->
   <section>
 
     <div class="section-label">
-      <p class="section-label-text">Section 4 — Procedural &amp; Decision Modals</p>
+      <p class="section-label-text">Section 6 — Procedural &amp; Decision Modals</p>
     </div>
 
     <div class="px-8 py-10">
@@ -643,6 +874,81 @@
     </div>
 
   </section>
+
+  <!-- ============================================================
+       CHART.JS INITIALISATION
+  ============================================================ -->
+  <script>
+    // Chart.js greyscale defaults
+    Chart.defaults.font.family = '"Balsamiq Sans", cursive';
+    Chart.defaults.color = '#71717A';
+    Chart.defaults.borderColor = '#E7E5E4';
+    Chart.defaults.plugins.legend.labels.usePointStyle = true;
+
+    // Bar Chart
+    new Chart(document.getElementById('chart-bar'), {
+      type: 'bar',
+      data: {
+        labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+        datasets: [{
+          label: 'Revenue ($k)',
+          data: [42, 58, 35, 67],
+          backgroundColor: '#71717A',
+          borderRadius: 4,
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { grid: { color: '#E7E5E4' }, beginAtZero: true },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    // Line Chart
+    new Chart(document.getElementById('chart-line'), {
+      type: 'line',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [{
+          label: 'Active Users',
+          data: [120, 190, 170, 250, 220, 310],
+          borderColor: '#3F3F46',
+          backgroundColor: '#3F3F46',
+          borderWidth: 2,
+          pointRadius: 4,
+          tension: 0.1,
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { grid: { color: '#E7E5E4' }, beginAtZero: true },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+
+    // Pie Chart
+    new Chart(document.getElementById('chart-pie'), {
+      type: 'pie',
+      data: {
+        labels: ['Hardware', 'Software', 'Services', 'Other'],
+        datasets: [{
+          data: [35, 30, 20, 15],
+          backgroundColor: ['#3F3F46', '#71717A', '#D1D5DB', '#E7E5E4'],
+          borderWidth: 1,
+          borderColor: '#FFFFFF',
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { position: 'bottom' }
+        }
+      }
+    });
+  </script>
 
   <!-- ============================================================
        PROCEDURAL MODAL JAVASCRIPT

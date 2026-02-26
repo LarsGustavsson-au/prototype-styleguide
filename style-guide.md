@@ -1,5 +1,5 @@
 # Prototype Wireframe Style Guide
-### v1.0 — Locked · 2026-02-26
+### v1.1 — 2026-02-26
 
 This document defines the shared visual language for wireframe prototypes. It uses a greyscale-first approach inspired by Balsamiq, with sparse colour accents for primary actions, errors, and warnings. All tokens use Tailwind CSS classes, wrapped in **semantic component classes** (e.g. `.btn-primary`, `.card-standard`). In HTML you use the semantic class name — never raw Tailwind. To rebrand, you change the class definitions in the `<style>` block; the HTML stays untouched.
 
@@ -20,6 +20,9 @@ Add this to the `<head>` of any prototype HTML file:
 
 <!-- Remix Icons -->
 <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">
+
+<!-- Chart.js (for prototypes with charts) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <!-- Apply Balsamiq Sans globally -->
 <script>
@@ -616,6 +619,228 @@ Used in procedural modals for multi-step flows.
 | Inactive | `.step-inactive` | `w-7 h-7 rounded-full bg-gray-300 text-zinc-500 text-sm font-bold` |
 | Connector | `.step-connector` | `w-8 h-0.5 bg-gray-300` |
 On the final step, replace `btn-next` with `btn-primary` and label it "Finish" with `ri-check-line`.
+---
+
+## Tables
+
+### Small Table — `.table-simple`
+
+A compact, minimal table for inline data display. No frills — just clean rows of data.
+
+| Element | Semantic Class | Tailwind |
+| --- | --- | --- |
+| Table wrapper | `.table-simple` | `w-auto text-sm border-collapse` |
+| Header cell | `.table-simple th` | `font-bold text-zinc-700 text-left py-2 px-3 border-b border-gray-300` |
+| Body cell | `.table-simple td` | `text-zinc-600 py-2 px-3` |
+| Totals row | `.table-simple .table-totals td` | `font-bold text-zinc-700 border-t border-gray-300` |
+| Number cell | `.table-num` | `text-right` (apply to both `th` and `td`) |
+
+Rules:
+- Numbers right-aligned, text left-aligned
+- One thin horizontal rule below headers, one above totals row
+- No row dividers, no zebra striping, no sorting
+- Regular text size for data, bold for column headers and totals row
+
+```html
+<table class="table-simple">
+  <thead>
+    <tr>
+      <th>Item</th>
+      <th class="table-num">Qty</th>
+      <th class="table-num">Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Widget A</td><td class="table-num">12</td><td class="table-num">$48.00</td></tr>
+    <tr class="table-totals"><td>Total</td><td class="table-num">12</td><td class="table-num">$48.00</td></tr>
+  </tbody>
+</table>
+```
+
+---
+
+### Large Table — `.table-report`
+
+A full-width report table for data-heavy screens. Always placed inside a Content Section (see below).
+
+| Element | Semantic Class | Tailwind |
+| --- | --- | --- |
+| Table wrapper | `.table-report` | `w-full text-sm border-collapse` |
+| Header row | `.table-report thead tr` | `bg-zinc-600 text-white` |
+| Header cell | `.table-report th` | `font-bold text-left py-2.5 px-3 sticky top-0 bg-zinc-600` |
+| Body row (even) | `.table-report tbody tr:nth-child(even)` | `bg-stone-50` |
+| Body row (odd) | `.table-report tbody tr:nth-child(odd)` | `bg-white` |
+| Body cell | `.table-report td` | `text-zinc-600 py-2 px-3` |
+| Sortable header | `.table-sort` | Append sort icon: `ri-arrow-up-s-line` / `ri-arrow-down-s-line` |
+| Number cell | `.table-num` | `text-right` |
+| Footer | `.content-section-footer` | `bg-stone-100 border-t border-stone-200 px-4 py-3` |
+
+Rules:
+- Full width, inside a Content Section container
+- Zebra striping: alternating `white` / `stone-50` rows
+- Sticky header row (stays visible on scroll)
+- Sortable columns show up/down chevrons next to header text
+- Number columns right-aligned
+- Results/totals sit in a **non-scrollable footer** below the scrollable table body
+- Content section header uses `zinc-700` (darker); table column headers use `zinc-600` (lighter) — two distinct grey levels
+
+```html
+<div class="content-section">
+  <div class="content-section-header">Sales Report</div>
+  <div class="content-section-body p-0 overflow-auto max-h-64">
+    <table class="table-report">
+      <thead>
+        <tr>
+          <th>Product <i class="ri-arrow-up-s-line table-sort"></i></th>
+          <th class="table-num">Revenue</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Widget A</td><td class="table-num">$12,400</td></tr>
+        <tr><td>Widget B</td><td class="table-num">$8,200</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="content-section-footer">
+    <span class="font-bold text-zinc-700">Total Revenue: $20,600</span>
+  </div>
+</div>
+```
+
+---
+
+## Charts
+
+CDN dependency: **Chart.js** — a single lightweight charting library, no build tools required. Can be swapped for more powerful alternatives (D3.js, Apache ECharts) if the prototype evolves into production.
+
+### Chart Greyscale Palette
+
+Charts use greyscale tones to stay within the wireframe aesthetic:
+
+| Series | Hex | Tailwind Equivalent | Usage |
+| --- | --- | --- | --- |
+| Primary | #3F3F46 | `zinc-700` | First/main series |
+| Secondary | #71717A | `zinc-500` | Second series |
+| Tertiary | #D1D5DB | `gray-300` | Third series |
+| Quaternary | #E7E5E4 | `stone-200` | Fourth series |
+
+Gridlines and axes use `stone-200` (#E7E5E4). Axis labels use `zinc-500`.
+
+### Defined Chart Types
+
+**Bar Chart**
+- Bars: `zinc-500`
+- Gridlines: `stone-200`
+- X-axis labels visible, Y-axis with grid
+
+**Line Chart**
+- Line: `zinc-700`, 2px weight
+- Data points: filled circles in `zinc-700`
+- Gridlines: `stone-200`
+
+**Pie Chart**
+- Segments: `zinc-700`, `zinc-500`, `gray-300`, `stone-200` (in order for up to 4 segments)
+- Legend below chart
+
+### Chart.js Configuration Defaults
+
+```javascript
+// Apply these defaults at the top of your script
+Chart.defaults.font.family = '"Balsamiq Sans", cursive';
+Chart.defaults.color = '#71717A';           // zinc-500 for labels
+Chart.defaults.borderColor = '#E7E5E4';     // stone-200 for gridlines
+Chart.defaults.plugins.legend.labels.usePointStyle = true;
+```
+
+---
+
+## Content Sections
+
+### Content Section — `.content-section`
+
+A grouping container for form fields, tables, or mixed content on busy screens. Gives visual structure with a coloured header bar.
+
+| Element | Semantic Class | Tailwind |
+| --- | --- | --- |
+| Wrapper | `.content-section` | `border border-stone-200 rounded-lg overflow-hidden` |
+| Header | `.content-section-header` | `bg-zinc-700 text-white font-bold text-sm px-4 py-2` |
+| Body | `.content-section-body` | `bg-white px-4 py-4` |
+| Footer | `.content-section-footer` | `bg-stone-100 border-t border-stone-200 px-4 py-3` |
+
+Layout rules:
+- **Single section**: full width
+- **Two sections side by side**: use `grid grid-cols-1 md:grid-cols-2 gap-6`
+- A section never wraps mid-content to a second column
+- Responsive: two-column sections stack vertically on mobile
+
+```html
+<!-- Two side-by-side content sections -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <div class="content-section">
+    <div class="content-section-header">Personal Information</div>
+    <div class="content-section-body">
+      <!-- form fields here -->
+    </div>
+  </div>
+  <div class="content-section">
+    <div class="content-section-header">Address</div>
+    <div class="content-section-body">
+      <!-- form fields here -->
+    </div>
+  </div>
+</div>
+```
+
+---
+
+## Field Rows
+
+### Field Row — `.field-row`
+
+Inline grouping for related form fields that belong on the same line (e.g. First + Last name, City + State + Postcode).
+
+| Element | Semantic Class | Tailwind |
+| --- | --- | --- |
+| Row wrapper | `.field-row` | `flex flex-col sm:flex-row gap-4` |
+| Equal-width child | (default) | `flex-1` on each child `<div>` |
+| Unequal widths | utility override | e.g. `flex-[3]` + `flex-[2]` for 60/40 split |
+
+Rules:
+- Children grow equally by default (each gets `flex-1`)
+- For unequal widths, use `flex-[N]` on the child wrapper
+- Collapses to stacked layout on narrow screens (below `sm:` breakpoint)
+- Each child contains a standard `form-label` + `form-input` pair
+
+```html
+<!-- Equal widths: First Name + Last Name -->
+<div class="field-row">
+  <div class="flex-1">
+    <label class="form-label">First Name</label>
+    <input type="text" class="form-input" placeholder="Jane">
+  </div>
+  <div class="flex-1">
+    <label class="form-label">Last Name</label>
+    <input type="text" class="form-input" placeholder="Smith">
+  </div>
+</div>
+
+<!-- Unequal widths: City (wider) + State + Postcode -->
+<div class="field-row">
+  <div class="flex-[3]">
+    <label class="form-label">City</label>
+    <input type="text" class="form-input" placeholder="Melbourne">
+  </div>
+  <div class="flex-[2]">
+    <label class="form-label">State</label>
+    <input type="text" class="form-input" placeholder="VIC">
+  </div>
+  <div class="flex-[1]">
+    <label class="form-label">Postcode</label>
+    <input type="text" class="form-input" placeholder="3000">
+  </div>
+</div>
+```
+
 ---
 
 ## Layout Utilities
