@@ -15,7 +15,7 @@ planStatus:
     - tailwind
   created: "2026-02-21"
   updated: "2026-02-26T00:00:00.000Z"
-  progress: 93
+  progress: 98
 ---
 # Prototype Wireframe Style Guide
 
@@ -81,7 +81,7 @@ A Balsamiq-inspired greyscale style guide for rapid prototyping, adapted from th
 - [x] **2.5.4** Add **Verbose Decision Modal**: heading, subheading + body text, 2-column radio options (each with label + description), Cancel left / Continue right
 - [x] **2.5.5** Document Decision Modal pattern in `style-guide.md` (supports 2 or 3 options)
 
-> 
+>
 
 **Phase 2 exit criteria**: Single showcase page built, all tokens visually validated, user has reviewed.
 
@@ -94,9 +94,9 @@ A Balsamiq-inspired greyscale style guide for rapid prototyping, adapted from th
 - [x] **3.1** Incorporate any final colour/style adjustments from Phase 2 review into `style-guide.md` — added `type-modal-title` token
 - [x] **3.2** Verify all mockups reflect final tokens (no hardcoded values) — fixed modal headings and inline status in showcase
 - [x] **3.3** Add version header to style guide: `v1.0 — Locked`
-- [ ] **3.4** Final user sign-off
+- [x] **3.4** Final user sign-off
 - [x] **3.5** Initialize local git repo (done — `style-guide.md` and `showcase.html` committed)
-- [ ] **3.6** Optional: Push to GitHub (ask user when ready)
+- [x] **3.6** Pushed to GitHub — https://github.com/LarsGustavsson-au/prototype-styleguide
 
 **Phase 3 exit criteria**: Style guide marked v1.0, all mockups consistent, optionally pushed to GitHub.
 

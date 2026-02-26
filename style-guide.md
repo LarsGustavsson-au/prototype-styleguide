@@ -43,38 +43,38 @@ Add this to the `<head>` of any prototype HTML file:
 
 All UI elements default to greyscale. The palette mixes Stone (tints), Gray (lighter shades), and Zinc (mid-range) for visual warmth and depth.
 
-| Token       | Hex     | Tailwind Class | Role                                      |
-|-------------|---------|----------------|-------------------------------------------|
-| Stone-50    | #FAFAF9 | `stone-50`     | Page background                           |
-| Stone-100   | #F5F5F4 | `stone-100`    | Card backgrounds, subtle fills            |
-| Stone-200   | #E7E5E4 | `stone-200`    | Light borders, dividers, disabled bg      |
-| Gray-300    | #D1D5DB | `gray-300`     | Medium borders, input borders             |
-| Gray-400    | #9CA3AF | `gray-400`     | Placeholder text, disabled text, muted    |
-| Zinc-500    | #71717A | `zinc-500`     | Secondary text, captions, labels          |
-| Zinc-600    | #52525B | `zinc-600`     | Body text                                 |
-| Zinc-700    | #3F3F46 | `zinc-700`     | Headings, emphasis                        |
-| Zinc-800    | #27272A | `zinc-800`     | Strong headings, nav text                 |
-| Zinc-900    | #18181B | `zinc-900`     | Maximum contrast text (use sparingly)     |
-| White       | #FFFFFF | `white`        | Card surfaces, modal backgrounds          |
+| Token | Hex | Tailwind Class | Role |
+| --- | --- | --- | --- |
+| Stone-50 | #FAFAF9 | `stone-50` | Page background |
+| Stone-100 | #F5F5F4 | `stone-100` | Card backgrounds, subtle fills |
+| Stone-200 | #E7E5E4 | `stone-200` | Light borders, dividers, disabled bg |
+| Gray-300 | #D1D5DB | `gray-300` | Medium borders, input borders |
+| Gray-400 | #9CA3AF | `gray-400` | Placeholder text, disabled text, muted |
+| Zinc-500 | #71717A | `zinc-500` | Secondary text, captions, labels |
+| Zinc-600 | #52525B | `zinc-600` | Body text |
+| Zinc-700 | #3F3F46 | `zinc-700` | Headings, emphasis |
+| Zinc-800 | #27272A | `zinc-800` | Strong headings, nav text |
+| Zinc-900 | #18181B | `zinc-900` | Maximum contrast text (use sparingly) |
+| White | #FFFFFF | `white` | Card surfaces, modal backgrounds |
 
 ### Accent Tokens (sparse use only)
 
 These colours carry **meaning** and should only appear for their designated purpose. Never use them decoratively.
 
-| Token       | Hex     | Tailwind Class | Role                                      |
-|-------------|---------|----------------|-------------------------------------------|
-| Emerald-700 | #047857 | `emerald-700`  | Primary actions, positive status          |
-| Rose-800    | #9F1239 | `rose-800`     | Negative/error actions, negative status   |
-| Orange-500  | #F97316 | `orange-500`   | Warning status lights only                |
+| Token | Hex | Tailwind Class | Role |
+| --- | --- | --- | --- |
+| Emerald-700 | #047857 | `emerald-700` | Primary actions, positive status |
+| Rose-800 | #9F1239 | `rose-800` | Negative/error actions, negative status |
+| Orange-500 | #F97316 | `orange-500` | Warning status lights only |
 
 Supporting shades for hover/focus states:
 
-| Token       | Hex     | Tailwind Class | Role                                      |
-|-------------|---------|----------------|-------------------------------------------|
-| Emerald-800 | #065F46 | `emerald-800`  | Primary button hover                      |
-| Rose-900    | #881337 | `rose-900`     | Danger button hover                       |
-| Emerald-50  | #ECFDF5 | `emerald-50`   | Subtle positive background (validation)   |
-| Rose-50     | #FFF1F2 | `rose-50`      | Subtle negative background (validation)   |
+| Token | Hex | Tailwind Class | Role |
+| --- | --- | --- | --- |
+| Emerald-800 | #065F46 | `emerald-800` | Primary button hover |
+| Rose-900 | #881337 | `rose-900` | Danger button hover |
+| Emerald-50 | #ECFDF5 | `emerald-50` | Subtle positive background (validation) |
+| Rose-50 | #FFF1F2 | `rose-50` | Subtle negative background (validation) |
 
 ---
 
@@ -82,15 +82,15 @@ Supporting shades for hover/focus states:
 
 All text uses **Balsamiq Sans** via Google Fonts. This gives the wireframe its hand-drawn, lo-fi aesthetic.
 
-| Class Name           | Size        | Weight          | Colour   | Notes                    |
-|----------------------|-------------|-----------------|----------|--------------------------|
-| `type-title`         | `text-2xl`  | `font-bold`     | Zinc-800 | Main page titles         |
-| `type-modal-title`   | `text-xl`   | `font-bold`     | Zinc-800 | Modal/dialog headings    |
-| `type-heading`       | `text-lg`   | `font-bold`     | Zinc-700 | Section headings         |
-| `type-body`         | `text-base` | `font-normal`   | Zinc-600 | General body text        |
-| `type-body-emphasis`| `text-base` | `font-bold`     | Zinc-700 | Emphasized body text     |
-| `type-caption`      | `text-sm`   | `font-normal`   | Zinc-500 | Labels, helper text      |
-| `type-muted`        | `text-sm`   | `font-normal`   | Gray-400 | Disabled/inactive text   |
+| Class Name | Size | Weight | Colour | Notes |
+| --- | --- | --- | --- | --- |
+| `type-title` | `text-2xl` | `font-bold` | Zinc-800 | Main page titles |
+| `type-modal-title` | `text-xl` | `font-bold` | Zinc-800 | Modal/dialog headings |
+| `type-heading` | `text-lg` | `font-bold` | Zinc-700 | Section headings |
+| `type-body` | `text-base` | `font-normal` | Zinc-600 | General body text |
+| `type-body-emphasis` | `text-base` | `font-bold` | Zinc-700 | Emphasized body text |
+| `type-caption` | `text-sm` | `font-normal` | Zinc-500 | Labels, helper text |
+| `type-muted` | `text-sm` | `font-normal` | Gray-400 | Disabled/inactive text |
 
 ---
 
@@ -287,12 +287,12 @@ Use a styled checkbox with peer classes, zinc-600 for the active state, gray-300
 
 Small coloured dots to indicate state. Use inline with text or in tables/lists. Base class: `.status-dot`
 
-| State    | Semantic Class     | Tailwind                                    | Icon alternative        |
-|----------|--------------------|---------------------------------------------|------------------------|
-| Positive | `.status-positive` | `w-2.5 h-2.5 rounded-full bg-emerald-700`  | `ri-checkbox-circle-fill text-emerald-700` |
-| Negative | `.status-negative` | `w-2.5 h-2.5 rounded-full bg-rose-800`     | `ri-close-circle-fill text-rose-800`       |
-| Warning  | `.status-warning`  | `w-2.5 h-2.5 rounded-full bg-orange-500`   | `ri-alert-fill text-orange-500`            |
-| Neutral  | `.status-neutral`  | `w-2.5 h-2.5 rounded-full bg-gray-300`     | `ri-checkbox-blank-circle-fill text-gray-300` |
+| State | Semantic Class | Tailwind | Icon alternative |
+| --- | --- | --- | --- |
+| Positive | `.status-positive` | `w-2.5 h-2.5 rounded-full bg-emerald-700` | `ri-checkbox-circle-fill text-emerald-700` |
+| Negative | `.status-negative` | `w-2.5 h-2.5 rounded-full bg-rose-800` | `ri-close-circle-fill text-rose-800` |
+| Warning | `.status-warning` | `w-2.5 h-2.5 rounded-full bg-orange-500` | `ri-alert-fill text-orange-500` |
+| Neutral | `.status-neutral` | `w-2.5 h-2.5 rounded-full bg-gray-300` | `ri-checkbox-blank-circle-fill text-gray-300` |
 
 Usage: `<span class="status-dot status-positive"></span>`
 
@@ -300,11 +300,11 @@ Usage: `<span class="status-dot status-positive"></span>`
 
 These classes bundle icon, colour, and sizing. You just write the text — the icon appears automatically.
 
-| State    | Semantic Class      | Icon (auto)                  | Colour       |
-|----------|--------------------|-----------------------------|--------------|
-| Positive | `.inline-positive` | `ri-checkbox-circle-fill`   | Emerald-700  |
-| Negative | `.inline-negative` | `ri-close-circle-fill`      | Rose-800     |
-| Warning  | `.inline-warning`  | `ri-alert-fill`             | Orange-500   |
+| State | Semantic Class | Icon (auto) | Colour |
+| --- | --- | --- | --- |
+| Positive | `.inline-positive` | `ri-checkbox-circle-fill` | Emerald-700 |
+| Negative | `.inline-negative` | `ri-close-circle-fill` | Rose-800 |
+| Warning | `.inline-warning` | `ri-alert-fill` | Orange-500 |
 
 Usage: `<span class="inline-positive">Verified</span>` — renders as the green tick icon followed by "Verified".
 
@@ -412,6 +412,7 @@ Use for: failure messages, system errors, anything that requires the user to ack
 
 For a destructive confirmation (e.g. "Delete this item?"): use `.modal-actions-split` with `.btn-cancel` left and `.btn-danger` right.
 
+
 ---
 
 ### 3. Procedural Modal (Step-by-Step)
@@ -457,7 +458,6 @@ Use for: multi-step setup wizards, onboarding flows, guided tasks.
 </div>
 ```
 
-On the final step, replace `btn-next` with `btn-primary` and label it "Finish" with `ri-check-line`.
 
 ---
 
@@ -513,37 +513,37 @@ Use [Remix Icons](https://remixicon.com/) via CDN. Each icon has `-line` (outlin
 
 ### Recommended Prototype Icons
 
-| Purpose       | Icon Class              | Preview |
-|---------------|------------------------|---------|
-| Home          | `ri-home-line`         | Home    |
-| Search        | `ri-search-line`       | Search  |
-| User/Profile  | `ri-user-line`         | User    |
-| Settings      | `ri-settings-3-line`   | Gear    |
-| Menu          | `ri-menu-line`         | Hamburger |
-| Close         | `ri-close-line`        | X       |
-| Add/Create    | `ri-add-line`          | Plus    |
-| Edit          | `ri-pencil-line`       | Pencil  |
-| Delete/Trash  | `ri-delete-bin-line`   | Trash   |
-| Check/Success | `ri-check-line`        | Check   |
-| Warning       | `ri-alert-line`        | Alert   |
-| Info          | `ri-information-line`  | Info    |
-| Error         | `ri-error-warning-line`| Error   |
-| Arrow Right   | `ri-arrow-right-line`  | Arrow   |
-| Arrow Left    | `ri-arrow-left-line`   | Arrow   |
-| Chevron Down  | `ri-arrow-down-s-line` | Chevron |
-| Notification  | `ri-notification-line` | Bell    |
-| Calendar      | `ri-calendar-line`     | Calendar|
-| Download      | `ri-download-line`     | Download|
-| Upload        | `ri-upload-line`       | Upload  |
+| Purpose | Icon Class | Preview |
+| --- | --- | --- |
+| Home | `ri-home-line` | Home |
+| Search | `ri-search-line` | Search |
+| User/Profile | `ri-user-line` | User |
+| Settings | `ri-settings-3-line` | Gear |
+| Menu | `ri-menu-line` | Hamburger |
+| Close | `ri-close-line` | X |
+| Add/Create | `ri-add-line` | Plus |
+| Edit | `ri-pencil-line` | Pencil |
+| Delete/Trash | `ri-delete-bin-line` | Trash |
+| Check/Success | `ri-check-line` | Check |
+| Warning | `ri-alert-line` | Alert |
+| Info | `ri-information-line` | Info |
+| Error | `ri-error-warning-line` | Error |
+| Arrow Right | `ri-arrow-right-line` | Arrow |
+| Arrow Left | `ri-arrow-left-line` | Arrow |
+| Chevron Down | `ri-arrow-down-s-line` | Chevron |
+| Notification | `ri-notification-line` | Bell |
+| Calendar | `ri-calendar-line` | Calendar |
+| Download | `ri-download-line` | Download |
+| Upload | `ri-upload-line` | Upload |
 
 ### Icon Sizing
 
-| Size    | Class       | Usage                         |
-|---------|-------------|-------------------------------|
-| Small   | `text-base` | Inline with body text         |
-| Medium  | `text-xl`   | Buttons, list items           |
-| Large   | `text-3xl`  | Feature icons, empty states   |
-| XLarge  | `text-5xl`  | Hero icons, modal status      |
+| Size | Class | Usage |
+| --- | --- | --- |
+| Small | `text-base` | Inline with body text |
+| Medium | `text-xl` | Buttons, list items |
+| Large | `text-3xl` | Feature icons, empty states |
+| XLarge | `text-5xl` | Hero icons, modal status |
 
 Icon colour follows the same rules as text — grey by default, accent colours only for status meaning.
 
@@ -551,21 +551,21 @@ Icon colour follows the same rules as text — grey by default, accent colours o
 
 ## Spacing
 
-| Token              | Value    | Usage                                    |
-|--------------------|----------|------------------------------------------|
-| `spacing-page`     | `p-4`   | Page-level padding                       |
-| `spacing-section`  | `gap-6` | Gap between major sections               |
-| `spacing-items`    | `gap-3` | Gap between related items (e.g. buttons) |
-| `spacing-internal` | `p-4`   | Internal padding for containers          |
+| Token | Value | Usage |
+| --- | --- | --- |
+| `spacing-page` | `p-4` | Page-level padding |
+| `spacing-section` | `gap-6` | Gap between major sections |
+| `spacing-items` | `gap-3` | Gap between related items (e.g. buttons) |
+| `spacing-internal` | `p-4` | Internal padding for containers |
 
 ---
 
 ## Transitions & Animations
 
-| Token                  | Duration | Easing         | Usage                              |
-|------------------------|----------|----------------|------------------------------------|
-| `transition-fast`      | 150ms    | `ease-in-out`  | Hover states, colour changes       |
-| `transition-standard`  | 200ms    | `ease-out`     | Element appear/disappear           |
+| Token | Duration | Easing | Usage |
+| --- | --- | --- | --- |
+| `transition-fast` | 150ms | `ease-in-out` | Hover states, colour changes |
+| `transition-standard` | 200ms | `ease-out` | Element appear/disappear |
 
 Keep transitions minimal for a wireframe feel. Avoid elaborate animations.
 
@@ -588,10 +588,10 @@ bg-white border-b border-stone-200 px-8 py-3
 flex items-center justify-between shadow-sm
 ```
 
-| Element      | Semantic Class | Definition                                   |
-|-------------|---------------|----------------------------------------------|
-| Brand text  | `.navbar-brand` | `font-bold text-zinc-800 text-lg`          |
-| Nav link    | `.navbar-link`  | `text-zinc-600 hover:text-zinc-900 text-base` |
+| Element | Semantic Class | Definition |
+| --- | --- | --- |
+| Brand text | `.navbar-brand` | `font-bold text-zinc-800 text-lg` |
+| Nav link | `.navbar-link` | `text-zinc-600 hover:text-zinc-900 text-base` |
 
 ---
 
@@ -610,21 +610,21 @@ Footer links: `.footer-link` — `hover:text-white transition-colors duration-15
 
 Used in procedural modals for multi-step flows.
 
-| Element    | Semantic Class   | Tailwind                                                    |
-|-----------|-----------------|-------------------------------------------------------------|
-| Active    | `.step-active`   | `w-7 h-7 rounded-full bg-emerald-700 text-white text-sm font-bold` |
-| Inactive  | `.step-inactive` | `w-7 h-7 rounded-full bg-gray-300 text-zinc-500 text-sm font-bold` |
-| Connector | `.step-connector`| `w-8 h-0.5 bg-gray-300`                                    |
-
+| Element | Semantic Class | Tailwind |
+| --- | --- | --- |
+| Active | `.step-active` | `w-7 h-7 rounded-full bg-emerald-700 text-white text-sm font-bold` |
+| Inactive | `.step-inactive` | `w-7 h-7 rounded-full bg-gray-300 text-zinc-500 text-sm font-bold` |
+| Connector | `.step-connector` | `w-8 h-0.5 bg-gray-300` |
+On the final step, replace `btn-next` with `btn-primary` and label it "Finish" with `ri-check-line`.
 ---
 
 ## Layout Utilities
 
 Semantic classes for page structure (used in showcase, reusable in projects):
 
-| Element       | Semantic Class      | Tailwind                                          |
-|--------------|--------------------|----------------------------------------------------|
-| Page body    | `.page-bg`         | `bg-stone-50 text-zinc-700`                       |
-| Section divider | `.section-divider` | `border-b-4 border-zinc-800`                   |
-| Section label | `.section-label`   | `bg-zinc-700 text-white px-8 py-2`               |
-| Label text   | `.section-label-text` | `text-sm font-bold tracking-widest uppercase`  |
+| Element | Semantic Class | Tailwind |
+| --- | --- | --- |
+| Page body | `.page-bg` | `bg-stone-50 text-zinc-700` |
+| Section divider | `.section-divider` | `border-b-4 border-zinc-800` |
+| Section label | `.section-label` | `bg-zinc-700 text-white px-8 py-2` |
+| Label text | `.section-label-text` | `text-sm font-bold tracking-widest uppercase` |
