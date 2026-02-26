@@ -1,4 +1,5 @@
 # Prototype Wireframe Style Guide
+### v1.0 — Locked · 2026-02-26
 
 This document defines the shared visual language for wireframe prototypes. It uses a greyscale-first approach inspired by Balsamiq, with sparse colour accents for primary actions, errors, and warnings. All tokens use Tailwind CSS classes, wrapped in **semantic component classes** (e.g. `.btn-primary`, `.card-standard`). In HTML you use the semantic class name — never raw Tailwind. To rebrand, you change the class definitions in the `<style>` block; the HTML stays untouched.
 
@@ -81,10 +82,11 @@ Supporting shades for hover/focus states:
 
 All text uses **Balsamiq Sans** via Google Fonts. This gives the wireframe its hand-drawn, lo-fi aesthetic.
 
-| Class Name          | Size        | Weight          | Colour   | Notes                    |
-|---------------------|-------------|-----------------|----------|--------------------------|
-| `type-title`        | `text-2xl`  | `font-bold`     | Zinc-800 | Main page titles         |
-| `type-heading`      | `text-lg`   | `font-bold`     | Zinc-700 | Section headings         |
+| Class Name           | Size        | Weight          | Colour   | Notes                    |
+|----------------------|-------------|-----------------|----------|--------------------------|
+| `type-title`         | `text-2xl`  | `font-bold`     | Zinc-800 | Main page titles         |
+| `type-modal-title`   | `text-xl`   | `font-bold`     | Zinc-800 | Modal/dialog headings    |
+| `type-heading`       | `text-lg`   | `font-bold`     | Zinc-700 | Section headings         |
 | `type-body`         | `text-base` | `font-normal`   | Zinc-600 | General body text        |
 | `type-body-emphasis`| `text-base` | `font-bold`     | Zinc-700 | Emphasized body text     |
 | `type-caption`      | `text-sm`   | `font-normal`   | Zinc-500 | Labels, helper text      |
@@ -354,6 +356,157 @@ Modal internal structure (all semantic classes):
 
 ---
 
+## Modal Patterns
+
+Four named modal patterns. Each uses the same structural classes above — only the interior content differs. Copy the relevant skeleton into your prototype and fill in the content.
+
+### 1. Confirmation Modal
+
+Use for: success messages, simple confirmations that need a single acknowledgement action.
+
+```html
+<div id="modal-confirm" class="hidden modal-overlay">
+  <div class="card-prominent">
+    <div class="modal-header">
+      <h3 class="type-modal-title">Modal Title</h3>
+    </div>
+    <hr class="modal-divider">
+    <div class="modal-body">
+      <p class="type-body mb-5">Body message goes here.</p>
+      <div class="modal-actions">
+        <button class="btn-primary">
+          <span class="flex items-center gap-2"><i class="ri-check-line"></i> Continue</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+For a two-button confirmation (e.g. "Are you sure?"): use `.modal-actions-split` with `.btn-cancel` left and `.btn-primary` right.
+
+---
+
+### 2. Error Modal
+
+Use for: failure messages, system errors, anything that requires the user to acknowledge a problem before continuing. Uses `btn-danger` for the action button.
+
+```html
+<div id="modal-error" class="hidden modal-overlay">
+  <div class="card-prominent">
+    <div class="modal-header">
+      <h3 class="type-modal-title">Something went wrong</h3>
+    </div>
+    <hr class="modal-divider">
+    <div class="modal-body">
+      <p class="type-body mb-5">Describe what failed and what the user should do next.</p>
+      <div class="modal-actions">
+        <button class="btn-danger">
+          <span class="flex items-center gap-2"><i class="ri-close-line"></i> Ok</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+For a destructive confirmation (e.g. "Delete this item?"): use `.modal-actions-split` with `.btn-cancel` left and `.btn-danger` right.
+
+---
+
+### 3. Procedural Modal (Step-by-Step)
+
+Use for: multi-step setup wizards, onboarding flows, guided tasks.
+
+```html
+<div id="modal-procedural" class="hidden modal-overlay">
+  <div class="card-prominent">
+    <div class="modal-header">
+      <h3 class="type-modal-title">Flow Title</h3>
+    </div>
+    <hr class="modal-divider">
+    <div class="modal-body">
+      <!-- Step indicators — first element below the divider -->
+      <div class="flex items-center gap-2 mb-4">
+        <span class="step-active">1</span>
+        <div class="step-connector"></div>
+        <span class="step-inactive">2</span>
+        <div class="step-connector"></div>
+        <span class="step-inactive">3</span>
+        <span class="type-caption ml-2">Step 1 of 3</span>
+      </div>
+      <!-- Step content -->
+      <p class="type-body mb-4">Step description goes here.</p>
+      <div class="card-light mb-5 type-caption">Step content area.</div>
+      <!-- Navigation: Cancel far left | Previous + Next/Finish far right -->
+      <div class="modal-actions-split">
+        <button class="btn-cancel">
+          <span class="flex items-center gap-2"><i class="ri-arrow-go-back-line"></i> Cancel</span>
+        </button>
+        <div class="flex gap-2">
+          <button class="btn-previous" disabled>
+            <span class="flex items-center gap-1"><i class="ri-arrow-left-line"></i> Previous</span>
+          </button>
+          <button class="btn-next">
+            <span class="flex items-center gap-2">Next <i class="ri-arrow-right-line"></i></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+On the final step, replace `btn-next` with `btn-primary` and label it "Finish" with `ri-check-line`.
+
+---
+
+### 4. Verbose Decision Modal
+
+Use for: choosing between 2–3 options that each need explanation before the user decides.
+
+```html
+<div id="modal-decision" class="hidden modal-overlay">
+  <div class="card-prominent">
+    <div class="modal-header">
+      <h3 class="type-modal-title">How would you like to proceed?</h3>
+    </div>
+    <hr class="modal-divider">
+    <div class="modal-body">
+      <h4 class="type-heading mb-2">Subheading</h4>
+      <p class="type-body mb-5">Explanatory paragraph giving context before the user chooses.</p>
+      <!-- For 2 options use grid-cols-2; for 3 options use grid-cols-3 -->
+      <div class="grid grid-cols-2 gap-4 mb-6">
+        <label class="flex items-start gap-3 cursor-pointer">
+          <input type="radio" name="decision-option" value="a" checked class="form-radio mt-1 shrink-0">
+          <div>
+            <span class="form-check-label font-bold block mb-1">Option A</span>
+            <p class="type-caption">Description of this option and when to use it.</p>
+          </div>
+        </label>
+        <label class="flex items-start gap-3 cursor-pointer">
+          <input type="radio" name="decision-option" value="b" class="form-radio mt-1 shrink-0">
+          <div>
+            <span class="form-check-label font-bold block mb-1">Option B</span>
+            <p class="type-caption">Description of this option and when to use it.</p>
+          </div>
+        </label>
+      </div>
+      <div class="modal-actions-split">
+        <button class="btn-cancel">
+          <span class="flex items-center gap-2"><i class="ri-arrow-go-back-line"></i> Cancel</span>
+        </button>
+        <button class="btn-primary">
+          <span class="flex items-center gap-2"><i class="ri-check-line"></i> Continue</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+---
+
 ## Icons (Remix Icons)
 
 Use [Remix Icons](https://remixicon.com/) via CDN. Each icon has `-line` (outlined) and `-fill` (solid) variants. Prefer `-line` for wireframes; use `-fill` for active/selected states.
@@ -450,19 +603,6 @@ bg-zinc-800 text-zinc-400 px-8 py-6
 flex items-center justify-between text-sm
 ```
 Footer links: `.footer-link` — `hover:text-white transition-colors duration-150`
-
----
-
-## Progress Bar
-
-Greyscale track with emerald fill for progress indication.
-
-| Element | Semantic Class   | Tailwind                                     |
-|---------|-----------------|----------------------------------------------|
-| Track   | `.progress-track` | `bg-stone-200 rounded-full h-2 w-full`     |
-| Fill    | `.progress-fill`  | `bg-emerald-700 rounded-full h-2`          |
-
-Use inline style for dynamic width: `style="width: 50%"`.
 
 ---
 

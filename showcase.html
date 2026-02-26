@@ -43,12 +43,13 @@
       .section-label-text { @apply text-sm font-bold tracking-widest uppercase; }
 
       /* ── Typography ── */
-      .type-title      { @apply text-2xl font-bold text-zinc-800; }
-      .type-heading    { @apply text-lg font-bold text-zinc-700; }
-      .type-body       { @apply text-base font-normal text-zinc-600; }
+      .type-title       { @apply text-2xl font-bold text-zinc-800; }
+      .type-modal-title { @apply text-xl font-bold text-zinc-800; }
+      .type-heading     { @apply text-lg font-bold text-zinc-700; }
+      .type-body        { @apply text-base font-normal text-zinc-600; }
       .type-body-emphasis { @apply text-base font-bold text-zinc-700; }
-      .type-caption    { @apply text-sm font-normal text-zinc-500; }
-      .type-muted      { @apply text-sm font-normal text-gray-400; }
+      .type-caption     { @apply text-sm font-normal text-zinc-500; }
+      .type-muted       { @apply text-sm font-normal text-gray-400; }
 
       /* ── Text Links ── */
       .text-link       { @apply text-zinc-600 underline underline-offset-2 hover:text-zinc-900 transition-colors duration-150; }
@@ -107,10 +108,6 @@
       .inline-positive { @apply inline-flex items-center gap-1 text-sm text-emerald-700; }
       .inline-negative { @apply inline-flex items-center gap-1 text-sm text-rose-800; }
       .inline-warning  { @apply inline-flex items-center gap-1 text-sm text-orange-500; }
-
-      /* ── Progress Bar ── */
-      .progress-track  { @apply bg-stone-200 rounded-full h-2 w-full; }
-      .progress-fill   { @apply bg-emerald-700 rounded-full h-2 transition-all duration-200; }
 
       /* ── Footer ── */
       .footer          { @apply bg-zinc-800 text-zinc-400 px-8 py-6 flex items-center justify-between text-sm; }
@@ -243,10 +240,7 @@
         <div class="card-standard">
           <div class="flex items-start justify-between mb-3">
             <i class="ri-user-line text-3xl text-zinc-500"></i>
-            <span class="flex items-center gap-1 text-sm text-emerald-700">
-              <i class="ri-checkbox-circle-fill"></i>
-              Verified
-            </span>
+            <span class="inline-positive">Verified</span>
           </div>
           <h4 class="type-body-emphasis mb-1">User Accounts</h4>
           <p class="type-caption">Manage users, roles, and permissions.</p>
@@ -289,7 +283,6 @@
         <span class="inline-positive">Verified</span>
         <span class="inline-negative">Connection failed</span>
         <span class="inline-warning">Expiring soon</span>
-        </span>
       </div>
     </div>
 
@@ -460,16 +453,6 @@
           </div>
         </div>
 
-        <!-- Submit Row -->
-        <div class="flex gap-3 pt-2">
-          <button class="btn-primary">
-            <span class="flex items-center gap-2"><i class="ri-check-line"></i> Create Account</span>
-          </button>
-          <button class="btn-cancel">
-            <span class="flex items-center gap-2"><i class="ri-arrow-go-back-line"></i> Cancel</span>
-          </button>
-        </div>
-
       </form>
     </div>
 
@@ -500,7 +483,7 @@
     <div id="modal-success" class="hidden modal-overlay">
       <div class="card-prominent">
         <div class="modal-header">
-          <h3 class="text-xl font-bold text-zinc-800">Success</h3>
+          <h3 class="type-modal-title">Success</h3>
         </div>
         <hr class="modal-divider">
         <div class="modal-body">
@@ -518,7 +501,7 @@
     <div id="modal-error" class="hidden modal-overlay">
       <div class="card-prominent">
         <div class="modal-header">
-          <h3 class="text-xl font-bold text-zinc-800">Something went wrong</h3>
+          <h3 class="type-modal-title">Something went wrong</h3>
         </div>
         <hr class="modal-divider">
         <div class="modal-body">
@@ -535,19 +518,24 @@
   </section>
 
   <!-- ============================================================
-       SECTION 4: PROCEDURAL MODAL
+       SECTION 4: PROCEDURAL & DECISION MODALS
   ============================================================ -->
   <section>
 
     <div class="section-label">
-      <p class="section-label-text">Section 4 — Procedural Modal</p>
+      <p class="section-label-text">Section 4 — Procedural &amp; Decision Modals</p>
     </div>
 
     <div class="px-8 py-10">
-      <p class="type-caption mb-6">Step-by-step flow with progress bar and navigation buttons.</p>
-      <button onclick="document.getElementById('modal-procedural').classList.remove('hidden')" class="btn-primary mb-10">
-        <span class="flex items-center gap-2"><i class="ri-check-line"></i> Open Step-by-Step Flow</span>
-      </button>
+      <p class="type-caption mb-6">Step-by-step flow with visual stepper, and verbose decision modal with radio options.</p>
+      <div class="flex gap-4 flex-wrap">
+        <button onclick="document.getElementById('modal-procedural').classList.remove('hidden')" class="btn-primary">
+          <span class="flex items-center gap-2"><i class="ri-check-line"></i> Open Step-by-Step Flow</span>
+        </button>
+        <button onclick="document.getElementById('modal-decision').classList.remove('hidden')" class="btn-secondary">
+          <span class="flex items-center gap-2"><i class="ri-question-line"></i> Open Decision Modal</span>
+        </button>
+      </div>
     </div>
 
     <!-- Procedural Modal Overlay (interactive) -->
@@ -556,7 +544,7 @@
 
         <!-- Title only above divider -->
         <div class="modal-header">
-          <h3 class="text-xl font-bold text-zinc-800" id="step-title">Getting Started</h3>
+          <h3 class="type-modal-title" id="step-title">Getting Started</h3>
         </div>
 
         <hr class="modal-divider">
@@ -575,16 +563,6 @@
           </div>
 
           <p class="type-body mb-4" id="step-desc">Welcome to the setup wizard. We'll guide you through a few steps.</p>
-
-          <!-- Progress bar -->
-          <div class="mb-4">
-            <div class="flex justify-between type-caption mb-1">
-              <span>Progress</span><span id="progress-pct">33%</span>
-            </div>
-            <div class="progress-track">
-              <div class="progress-fill" id="progress-bar" style="width: 33%"></div>
-            </div>
-          </div>
 
           <!-- Step placeholder -->
           <div class="card-light mb-5 type-caption" id="step-placeholder">
@@ -610,6 +588,60 @@
       </div>
     </div>
 
+    <!-- Decision Modal Overlay -->
+    <div id="modal-decision" class="hidden modal-overlay">
+      <div class="card-prominent">
+
+        <!-- Heading above divider -->
+        <div class="modal-header">
+          <h3 class="type-modal-title">How would you like to proceed?</h3>
+        </div>
+
+        <hr class="modal-divider">
+
+        <div class="modal-body">
+
+          <!-- Subheading + body text -->
+          <h4 class="type-heading mb-2">Choose an export format</h4>
+          <p class="type-body mb-5">Your report is ready to export. Each format has different trade-offs depending on how you plan to use the data. Select the option that best fits your workflow, then click Continue.</p>
+
+          <!-- Two-column radio options with descriptions -->
+          <div class="grid grid-cols-2 gap-4 mb-6">
+
+            <!-- Option A -->
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="radio" name="decision-option" value="a" checked class="form-radio mt-1 shrink-0">
+              <div>
+                <span class="form-check-label font-bold block mb-1">Export as PDF</span>
+                <p class="type-caption">Best for sharing with stakeholders. Preserves layout and formatting. Not editable after export.</p>
+              </div>
+            </label>
+
+            <!-- Option B -->
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="radio" name="decision-option" value="b" class="form-radio mt-1 shrink-0">
+              <div>
+                <span class="form-check-label font-bold block mb-1">Export as CSV</span>
+                <p class="type-caption">Best for further analysis in spreadsheet tools. Plain data only — no styling or charts included.</p>
+              </div>
+            </label>
+
+          </div>
+
+          <!-- Actions: Cancel left, Continue right -->
+          <div class="modal-actions-split">
+            <button onclick="document.getElementById('modal-decision').classList.add('hidden')" class="btn-cancel">
+              <span class="flex items-center gap-2"><i class="ri-arrow-go-back-line"></i> Cancel</span>
+            </button>
+            <button onclick="document.getElementById('modal-decision').classList.add('hidden')" class="btn-primary">
+              <span class="flex items-center gap-2"><i class="ri-check-line"></i> Continue</span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
   </section>
 
   <!-- ============================================================
@@ -626,14 +658,11 @@
 
     function updateModal() {
       const total = steps.length;
-      const pct = Math.round(((currentStep + 1) / total) * 100);
 
       document.getElementById('step-title').textContent       = steps[currentStep].title;
       document.getElementById('step-desc').textContent        = steps[currentStep].desc;
       document.getElementById('step-placeholder').textContent = steps[currentStep].placeholder;
       document.getElementById('step-label').textContent       = `Step ${currentStep + 1} of ${total}`;
-      document.getElementById('progress-pct').textContent     = `${pct}%`;
-      document.getElementById('progress-bar').style.width     = `${pct}%`;
 
       // Update step indicators (uses semantic class names)
       const indicators = document.getElementById('step-indicators');
