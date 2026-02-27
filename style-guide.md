@@ -1,7 +1,7 @@
 # Prototype Wireframe Style Guide
-### v1.1 — 2026-02-26
+### v1.2 — 2026-02-27
 
-This document defines the shared visual language for wireframe prototypes. It uses a greyscale-first approach inspired by Balsamiq, with sparse colour accents for primary actions, errors, and warnings. All tokens use Tailwind CSS classes, wrapped in **semantic component classes** (e.g. `.btn-primary`, `.card-standard`). In HTML you use the semantic class name — never raw Tailwind. To rebrand, you change the class definitions in the `<style>` block; the HTML stays untouched.
+This document defines the shared visual language for wireframe prototypes. It uses a greyscale-first approach inspired by Balsamiq, with sparse colour accents for primary actions, errors, and warnings. All tokens use **semantic component classes** (e.g. `.btn-primary`, `.card-standard`). In HTML you use the semantic class name — never raw Tailwind. All colours and the brand font are defined as **CSS custom properties** (`:root` variables). To rebrand, you change the `:root` variables block — all component classes and the HTML stay untouched.
 
 ---
 
@@ -13,7 +13,7 @@ Add this to the `<head>` of any prototype HTML file:
 <!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com"></script>
 
-<!-- Balsamiq Sans Font -->
+<!-- Balsamiq Sans Font (swap this CDN link when re-branding) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&display=swap" rel="stylesheet">
@@ -24,13 +24,13 @@ Add this to the `<head>` of any prototype HTML file:
 <!-- Chart.js (for prototypes with charts) -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<!-- Apply Balsamiq Sans globally -->
+<!-- Apply brand font globally via Tailwind config -->
 <script>
   tailwind.config = {
     theme: {
       extend: {
         fontFamily: {
-          sans: ['"Balsamiq Sans"', 'cursive'],
+          sans: ['var(--brand-font)', 'cursive'],
         }
       }
     }
@@ -40,178 +40,339 @@ Add this to the `<head>` of any prototype HTML file:
 
 ---
 
+## Brand Variables
+
+All colours and the brand font are defined as CSS custom properties in a single `:root` block. Variables are named by **role** (e.g. `--surface-card`, `--text-heading`, `--control-border`) — never by colour. Every semantic component class references these variables. To re-brand, change this block (see [How to Re-brand](#how-to-re-brand) below).
+
+```css
+:root {
+  /* ── Brand Accent Colours ── */
+  --brand-primary:       #047857;  /* emerald-700 — primary actions, positive status */
+  --brand-primary-hover: #065F46;  /* emerald-800 — primary button hover */
+  --brand-danger:        #9F1239;  /* rose-800 — negative/error actions */
+  --brand-danger-hover:  #881337;  /* rose-900 — danger button hover */
+  --brand-warning:       #F97316;  /* orange-500 — warning status only */
+
+  /* ── Text on Accent Backgrounds ── */
+  --brand-on-primary:    #FFFFFF;
+  --brand-on-danger:     #FFFFFF;
+
+  /* ── Subtle Accent Backgrounds (validation) ── */
+  --brand-primary-subtle: #ECFDF5;  /* emerald-50 */
+  --brand-danger-subtle:  #FFF1F2;  /* rose-50 */
+
+  /* ── Surfaces (backgrounds) ── */
+  --surface-page:            #FAFAF9;  /* full page background */
+  --surface-card:            #FFFFFF;  /* cards, modals, navbar, content body, form inputs, panels */
+  --surface-card-alt:        #FAFAF9;  /* light card bg, table striped rows */
+  --surface-inset:           #F5F5F4;  /* footer areas, disabled bg, subtle hover bg */
+  --surface-sidebar:         #27272A;  /* left sidebar background */
+  --surface-footer:          #27272A;  /* page footer background */
+  --surface-section-header:  #3F3F46;  /* content-section header bar */
+  --surface-table-header:    #52525B;  /* report table column header */
+  --surface-overlay:         rgba(24, 24, 27, 0.5);  /* modal backdrop */
+  --surface-overlay-light:   rgba(24, 24, 27, 0.3);  /* panel backdrop */
+
+  /* ── Borders ── */
+  --border-light:            #E7E5E4;  /* card edges, dividers, panel/navbar borders */
+  --border-default:          #D1D5DB;  /* input borders, button borders, modal dividers */
+  --border-strong:           #3F3F46;  /* sidebar internal borders */
+  --border-section:          #27272A;  /* section divider (thick rule) */
+
+  /* ── Text ── */
+  --text-title:              #27272A;  /* page titles, modal titles, navbar brand */
+  --text-heading:            #3F3F46;  /* section headings, emphasis, form labels */
+  --text-body:               #52525B;  /* body copy, links, table cells */
+  --text-caption:            #71717A;  /* captions, helper text, secondary labels */
+  --text-placeholder:        #9CA3AF;  /* placeholders, disabled text, muted text */
+  --text-on-dark:            #FFFFFF;  /* text on dark surfaces (sidebar, footer, headers) */
+  --text-on-dark-muted:      #D1D5DB;  /* sidebar nav items (unselected) */
+  --text-on-dark-faint:      #71717A;  /* sidebar section labels */
+  --text-max-contrast:       #18181B;  /* link hover, maximum emphasis */
+
+  /* ── Interactive / Controls ── */
+  --control-bg:              #E7E5E4;  /* secondary, next, previous button bg */
+  --control-bg-hover:        #D1D5DB;  /* secondary, next, previous button hover */
+  --control-bg-strong:       #D1D5DB;  /* cancel button bg */
+  --control-bg-strong-hover: #9CA3AF;  /* cancel button hover */
+  --control-border:          #D1D5DB;  /* form input & button borders */
+  --control-border-strong:   #9CA3AF;  /* cancel button border */
+  --control-focus-border:    #71717A;  /* input focus border */
+  --control-focus-ring:      #D1D5DB;  /* input focus ring / shadow */
+  --control-accent:          #52525B;  /* checkbox, radio, toggle fill */
+  --control-icon-muted:      #9CA3AF;  /* close buttons, sidebar toggle (rest) */
+  --control-icon-muted-hover:#3F3F46;  /* close button hover */
+
+  /* ── Status (non-accent) ── */
+  --status-neutral:          #D1D5DB;  /* neutral status dot, inactive step bg, connectors */
+  --status-inactive-text:    #71717A;  /* inactive step number text */
+
+  /* ── Chart Data Series ── */
+  --chart-series-1:          #3F3F46;  /* primary/first data series */
+  --chart-series-2:          #71717A;  /* second data series */
+  --chart-series-3:          #D1D5DB;  /* third data series */
+  --chart-series-4:          #E7E5E4;  /* fourth data series */
+  --chart-axis-label:        #71717A;  /* axis labels, legend text */
+  --chart-gridline:          #E7E5E4;  /* gridlines */
+  --chart-segment-border:    #FFFFFF;  /* pie/doughnut segment borders */
+
+  /* ── Table-specific ── */
+  --table-sort-icon:         #D1D5DB;  /* sort arrow icons (inactive) */
+
+  /* ── Brand Font ── */
+  --brand-font: "Balsamiq Sans";
+}
+```
+
+### Variable Naming Convention
+
+| Prefix | Purpose |
+| --- | --- |
+| `--brand-*` | Accent colours that carry meaning (primary, danger, warning) |
+| `--surface-*` | Background colours for pages, cards, sidebars, footers, overlays |
+| `--border-*` | Border and divider colours at different emphasis levels |
+| `--text-*` | Text colours by role (title, body, caption, on-dark, etc.) |
+| `--control-*` | Interactive element colours (button bg, focus ring, checkbox accent) |
+| `--status-*` | Non-accent status indicators (neutral dot, inactive step) |
+| `--chart-*` | Data visualisation colours (series 1–4, gridlines, axis labels) |
+| `--table-*` | Table-specific colours (sort icons) |
+
+### How Semantic Classes Use Variables
+
+Component classes use a **hybrid approach**:
+- **Tailwind \****`@apply`** for layout, spacing, sizing, and border-radius (these don't change per brand)
+- **Raw CSS properties** for colours and fonts (these reference semantic `var(--surface-*)`, `var(--text-*)`, `var(--control-*)`, `var(--brand-*)`, etc.)
+
+Example:
+```css
+.btn-primary {
+  @apply font-bold px-6 py-2.5 rounded-lg shadow-sm transition-colors duration-150 cursor-pointer border-none;
+  background-color: var(--brand-primary);
+  color: var(--brand-on-primary);
+}
+.btn-primary:hover {
+  background-color: var(--brand-primary-hover);
+}
+```
+
+---
+
 ## Colour Palette
 
-### Greyscale Tokens (primary palette)
+> **Note:** All colours are defined as CSS custom properties in the `:root` block (see [Brand Variables](#brand-variables) above). Variables are named by **role**, not by colour. The "Default Hex" column shows the wireframe prototype's value — a re-branded app would have different values here.
 
-All UI elements default to greyscale. The palette mixes Stone (tints), Gray (lighter shades), and Zinc (mid-range) for visual warmth and depth.
+### Surface Tokens (backgrounds)
 
-| Token | Hex | Tailwind Class | Role |
-| --- | --- | --- | --- |
-| Stone-50 | #FAFAF9 | `stone-50` | Page background |
-| Stone-100 | #F5F5F4 | `stone-100` | Card backgrounds, subtle fills |
-| Stone-200 | #E7E5E4 | `stone-200` | Light borders, dividers, disabled bg |
-| Gray-300 | #D1D5DB | `gray-300` | Medium borders, input borders |
-| Gray-400 | #9CA3AF | `gray-400` | Placeholder text, disabled text, muted |
-| Zinc-500 | #71717A | `zinc-500` | Secondary text, captions, labels |
-| Zinc-600 | #52525B | `zinc-600` | Body text |
-| Zinc-700 | #3F3F46 | `zinc-700` | Headings, emphasis |
-| Zinc-800 | #27272A | `zinc-800` | Strong headings, nav text |
-| Zinc-900 | #18181B | `zinc-900` | Maximum contrast text (use sparingly) |
-| White | #FFFFFF | `white` | Card surfaces, modal backgrounds |
+| CSS Variable | Default Hex | Role |
+| --- | --- | --- |
+| `--surface-page` | #FAFAF9 | Full page background |
+| `--surface-card` | #FFFFFF | Cards, modals, navbar, content body, form inputs, panels |
+| `--surface-card-alt` | #FAFAF9 | Light card bg, table striped rows |
+| `--surface-inset` | #F5F5F4 | Footer areas, disabled bg, subtle hover |
+| `--surface-sidebar` | #27272A | Left sidebar background |
+| `--surface-footer` | #27272A | Page footer background |
+| `--surface-section-header` | #3F3F46 | Content-section header bar |
+| `--surface-table-header` | #52525B | Report table column header |
+| `--surface-overlay` | rgba(24,24,27,0.5) | Modal backdrop |
+| `--surface-overlay-light` | rgba(24,24,27,0.3) | Panel backdrop |
+
+### Border Tokens
+
+| CSS Variable | Default Hex | Role |
+| --- | --- | --- |
+| `--border-light` | #E7E5E4 | Card edges, dividers, panel/navbar borders |
+| `--border-default` | #D1D5DB | Input borders, button borders, modal dividers |
+| `--border-strong` | #3F3F46 | Sidebar internal borders |
+| `--border-section` | #27272A | Section divider (thick rule) |
+
+### Text Tokens
+
+Collapsible navigation sidebar for multi-screen applications. Sits on the left edge of the screen. Two states: **expanded** (icons + labels) and **collapsed** (icons only, narrower).
+| CSS Variable | Default Hex | Role |
+| --- | --- | --- |
+| `--text-title` | #27272A | Page titles, modal titles, navbar brand |
+| `--text-heading` | #3F3F46 | Section headings, emphasis, form labels |
+| `--text-body` | #52525B | Body copy, links, table cells |
+| `--text-caption` | #71717A | Captions, helper text, secondary labels |
+| `--text-placeholder` | #9CA3AF | Placeholders, disabled text, muted text |
+| `--text-on-dark` | #FFFFFF | Text on dark surfaces (sidebar, footer, headers) |
+| `--text-on-dark-muted` | #D1D5DB | Sidebar nav items (unselected) |
+| `--text-on-dark-faint` | #71717A | Sidebar section labels |
+| `--text-max-contrast` | #18181B | Link hover, maximum emphasis |
+
+### Control Tokens (interactive elements)
+
+| CSS Variable | Default Hex | Role |
+| --- | --- | --- |
+| `--control-bg` | #E7E5E4 | Secondary, next, previous button bg |
+| `--control-bg-hover` | #D1D5DB | Secondary, next, previous button hover |
+| `--control-bg-strong` | #D1D5DB | Cancel button bg |
+| `--control-bg-strong-hover` | #9CA3AF | Cancel button hover |
+| `--control-border` | #D1D5DB | Form input & button borders |
+| `--control-border-strong` | #9CA3AF | Cancel button border |
+| `--control-focus-border` | #71717A | Input focus border |
+| `--control-focus-ring` | #D1D5DB | Input focus ring / shadow |
+| `--control-accent` | #52525B | Checkbox, radio, toggle fill |
+| `--control-icon-muted` | #9CA3AF | Close buttons, sidebar toggle (rest) |
+| `--control-icon-muted-hover` | #3F3F46 | Close button hover |
+
+### Status Tokens (non-accent)
+
+| CSS Variable | Default Hex | Role |
+| --- | --- | --- |
+| `--status-neutral` | #D1D5DB | Neutral status dot, inactive step bg, connectors |
+| `--status-inactive-text` | #71717A | Inactive step number text |
+
+### Chart Tokens (data visualisation)
+
+| CSS Variable | Default Hex | Role |
+| --- | --- | --- |
+| `--chart-series-1` | #3F3F46 | Primary/first data series |
+| `--chart-series-2` | #71717A | Second data series |
+| `--chart-series-3` | #D1D5DB | Third data series |
+| `--chart-series-4` | #E7E5E4 | Fourth data series |
+| `--chart-axis-label` | #71717A | Axis labels, legend text |
+| `--chart-gridline` | #E7E5E4 | Gridlines |
+| `--chart-segment-border` | #FFFFFF | Pie/doughnut segment borders |
+
+### Table Tokens
+
+| CSS Variable | Default Hex | Role |
+| --- | --- | --- |
+| `--table-sort-icon` | #D1D5DB | Sort arrow icons (inactive) |
 
 ### Accent Tokens (sparse use only)
 
 These colours carry **meaning** and should only appear for their designated purpose. Never use them decoratively.
 
-| Token | Hex | Tailwind Class | Role |
-| --- | --- | --- | --- |
-| Emerald-700 | #047857 | `emerald-700` | Primary actions, positive status |
-| Rose-800 | #9F1239 | `rose-800` | Negative/error actions, negative status |
-| Orange-500 | #F97316 | `orange-500` | Warning status lights only |
+| CSS Variable | Default Hex | Role |
+| --- | --- | --- |
+| `--brand-primary` | #047857 | Primary actions, positive status |
+| `--brand-danger` | #9F1239 | Negative/error actions, negative status |
+| `--brand-warning` | #F97316 | Warning status lights only |
 
 Supporting shades for hover/focus states:
 
-| Token | Hex | Tailwind Class | Role |
-| --- | --- | --- | --- |
-| Emerald-800 | #065F46 | `emerald-800` | Primary button hover |
-| Rose-900 | #881337 | `rose-900` | Danger button hover |
-| Emerald-50 | #ECFDF5 | `emerald-50` | Subtle positive background (validation) |
-| Rose-50 | #FFF1F2 | `rose-50` | Subtle negative background (validation) |
+| CSS Variable | Default Hex | Role |
+| --- | --- | --- |
+| `--brand-primary-hover` | #065F46 | Primary button hover |
+| `--brand-danger-hover` | #881337 | Danger button hover |
+| `--brand-primary-subtle` | #ECFDF5 | Subtle positive background (validation) |
+| `--brand-danger-subtle` | #FFF1F2 | Subtle negative background (validation) |
 
 ---
 
 ## Typography
 
-All text uses **Balsamiq Sans** via Google Fonts. This gives the wireframe its hand-drawn, lo-fi aesthetic.
+All text uses the brand font (default: **Balsamiq Sans** via Google Fonts). This gives the wireframe its hand-drawn, lo-fi aesthetic.
 
-| Class Name | Size | Weight | Colour | Notes |
+| Class Name | Size | Weight | Colour Variable | Notes |
 | --- | --- | --- | --- | --- |
-| `type-title` | `text-2xl` | `font-bold` | Zinc-800 | Main page titles |
-| `type-modal-title` | `text-xl` | `font-bold` | Zinc-800 | Modal/dialog headings |
-| `type-heading` | `text-lg` | `font-bold` | Zinc-700 | Section headings |
-| `type-body` | `text-base` | `font-normal` | Zinc-600 | General body text |
-| `type-body-emphasis` | `text-base` | `font-bold` | Zinc-700 | Emphasized body text |
-| `type-caption` | `text-sm` | `font-normal` | Zinc-500 | Labels, helper text |
-| `type-muted` | `text-sm` | `font-normal` | Gray-400 | Disabled/inactive text |
+| `type-title` | `text-2xl` | `font-bold` | `--text-title` | Main page titles |
+| `type-modal-title` | `text-xl` | `font-bold` | `--text-title` | Modal/dialog headings |
+| `type-heading` | `text-lg` | `font-bold` | `--text-heading` | Section headings |
+| `type-body` | `text-base` | `font-normal` | `--text-body` | General body text |
+| `type-body-emphasis` | `text-base` | `font-bold` | `--text-heading` | Emphasized body text |
+| `type-caption` | `text-sm` | `font-normal` | `--text-caption` | Labels, helper text |
+| `type-muted` | `text-sm` | `font-normal` | `--text-placeholder` | Disabled/inactive text |
 
 ---
 
 ## Buttons
 
+
 ### Primary Button — `.btn-primary`
-Main call-to-action. The only button with colour. Always includes a leading check icon.
-```
-bg-emerald-700 hover:bg-emerald-800 text-white
-font-bold
-px-6 py-2.5
-rounded-lg
-border-none
-shadow-sm
-transition-colors duration-150
-cursor-pointer
-```
+Main call-to-action. The only button with brand colour. Always includes a leading check icon.
+
+| Property | Value |
+| --- | --- |
+| Background | `--brand-primary` → hover: `--brand-primary-hover` |
+| Text | `--brand-on-primary` |
+| Border | none |
+| Layout | `font-bold px-6 py-2.5 rounded-lg shadow-sm` |
+
 Icon + label pattern: `<i class="ri-check-line"></i> Action Label`
 
 ### Secondary Button — `.btn-secondary`
-Alternative or less prominent action. Grey background.
-```
-bg-stone-200 hover:bg-gray-300 text-zinc-700
-font-bold
-px-6 py-2.5
-rounded-lg
-border border-gray-300
-shadow-sm
-transition-colors duration-150
-cursor-pointer
-```
+Alternative or less prominent action.
+
+| Property | Value |
+| --- | --- |
+| Background | `--control-bg` → hover: `--control-bg-hover` |
+| Text | `--text-heading` |
+| Border | `--control-border` |
+| Layout | `font-bold px-6 py-2.5 rounded-lg shadow-sm` |
 
 ### Danger Button — `.btn-danger`
 Destructive or negative action. Used sparingly.
-```
-bg-rose-800 hover:bg-rose-900 text-white
-font-bold
-px-6 py-2.5
-rounded-lg
-border-none
-shadow-sm
-transition-colors duration-150
-cursor-pointer
-```
+
+| Property | Value |
+| --- | --- |
+| Background | `--brand-danger` → hover: `--brand-danger-hover` |
+| Text | `--brand-on-danger` |
+| Border | none |
+| Layout | `font-bold px-6 py-2.5 rounded-lg shadow-sm` |
 
 ### Ghost Button — `.btn-ghost`
-Minimal emphasis, transparent background. Always has a border so it's visible on white backgrounds.
-```
-bg-transparent hover:bg-stone-100 text-zinc-600
-font-bold
-px-6 py-2.5
-rounded-lg
-border border-gray-300
-transition-colors duration-150
-cursor-pointer
-```
+Minimal emphasis, transparent background. Always has a border so it's visible on card backgrounds.
+
+| Property | Value |
+| --- | --- |
+| Background | transparent → hover: `--surface-inset` |
+| Text | `--text-body` |
+| Border | `--control-border` |
+| Layout | `font-bold px-6 py-2.5 rounded-lg` |
 
 ### Cancel Button — `.btn-cancel`
-Dismisses a dialog or backs out of a flow. Always paired with a primary action. Has its own grey background to distinguish it from the page. Uses `ri-arrow-go-back-line` icon.
-```
-bg-gray-300 hover:bg-gray-400 text-zinc-700
-font-bold
-px-6 py-2.5
-rounded-lg
-border border-gray-400
-transition-colors duration-150
-cursor-pointer
-```
+Dismisses a dialog or backs out of a flow. Always paired with a primary action. Uses `ri-arrow-go-back-line` icon.
+
+| Property | Value |
+| --- | --- |
+| Background | `--control-bg-strong` → hover: `--control-bg-strong-hover` |
+| Text | `--text-heading` |
+| Border | `--control-border-strong` |
+| Layout | `font-bold px-6 py-2.5 rounded-lg` |
+
 Icon + label pattern: `<i class="ri-arrow-go-back-line"></i> Cancel`
 
 ### Next Button — `.btn-next`
 Advances to the next step in a multi-step flow. Secondary style with a trailing arrow-right icon. Always sits to the right of Previous.
-```
-bg-stone-200 hover:bg-gray-300 text-zinc-700
-font-bold
-px-6 py-2.5
-rounded-lg
-border border-gray-300
-shadow-sm
-transition-colors duration-150
-cursor-pointer
-```
+
+| Property | Value |
+| --- | --- |
+| Background | `--control-bg` → hover: `--control-bg-hover` |
+| Text | `--text-heading` |
+| Border | `--control-border` |
+| Layout | `font-bold px-6 py-2.5 rounded-lg shadow-sm` |
+
 Icon + label pattern: `Next <i class="ri-arrow-right-line"></i>`
 
 ### Previous Button — `.btn-previous`
-Returns to the prior step in a multi-step flow. Secondary style with a leading arrow-left icon.
-```
-bg-stone-200 hover:bg-gray-300 text-zinc-700
-font-bold
-px-6 py-2.5
-rounded-lg
-border border-gray-300
-shadow-sm
-transition-colors duration-150
-cursor-pointer
-```
+Returns to the prior step in a multi-step flow. Secondary style with a leading arrow-left icon. Same styling as Next.
+
 Icon + label pattern: `<i class="ri-arrow-left-line"></i> Previous`
 
 ### Disabled Button — `.btn-disabled`
 Inactive state for any button.
-```
-bg-stone-100 text-gray-400
-cursor-not-allowed
-px-6 py-2.5
-rounded-lg
-border border-stone-200
-```
+
+| Property | Value |
+| --- | --- |
+| Background | `--surface-inset` |
+| Text | `--text-placeholder` |
+| Border | `--border-light` |
+| Layout | `cursor-not-allowed px-6 py-2.5 rounded-lg` |
 
 ---
 
 ## Text Links — `.text-link`
 
-Inline clickable text. Uses underline for universal affordance. Greyscale to stay within the wireframe palette — not blue.
-```
-text-zinc-600 underline underline-offset-2
-hover:text-zinc-900
-transition-colors duration-150
-```
+Inline clickable text. Uses underline for universal affordance. Uses body text colour — not blue.
+
+| Property | Value |
+| --- | --- |
+| Colour | `--text-body` → hover: `--text-max-contrast` |
+| Layout | `underline underline-offset-2` |
+
 Usage: `<a href="#" class="text-link">link text</a>`
 
 ---
@@ -219,45 +380,39 @@ Usage: `<a href="#" class="text-link">link text</a>`
 ## Form Elements
 
 ### Text Input (default) — `.form-input`
-```
-w-full
-bg-white
-border border-gray-300
-rounded-lg
-px-3 py-2
-text-zinc-700
-placeholder-gray-400
-focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-gray-300
-```
+
+| Property | Value |
+| --- | --- |
+| Background | `--surface-card` |
+| Text | `--text-heading` |
+| Placeholder | `--text-placeholder` |
+| Border | `--control-border` |
+| Focus border | `--control-focus-border` |
+| Focus ring | `--control-focus-ring` |
+| Layout | `w-full rounded-lg px-3 py-2` |
 
 ### Text Input (error state) — `.form-input-error`
-```
-border-rose-800 focus:border-rose-800 focus:ring-rose-800
-```
-Pair with error message: `text-sm text-rose-800 mt-1`
+Overrides border to `--brand-danger`. Pair with error message (`.form-error`).
 
 ### Text Input (success state) — `.form-input-success`
-```
-border-emerald-700 focus:border-emerald-700 focus:ring-emerald-700
-```
+Overrides border to `--brand-primary`.
 
 ### Text Input (disabled) — `.form-input-disabled`
-```
-bg-stone-100 text-gray-400 border-stone-200 cursor-not-allowed
-```
+
+| Property | Value |
+| --- | --- |
+| Background | `--surface-inset` |
+| Text | `--text-placeholder` |
+| Border | `--border-light` |
 
 ### Label — `.form-label`
-```
-text-sm font-bold text-zinc-700 mb-1 block
-```
+`text-sm font-bold mb-1 block` — colour: `--text-heading`
 
 ### Helper Text — `.form-helper`
-```
-text-sm text-zinc-500 mt-1
-```
+`text-sm mt-1` — colour: `--text-caption`
 
-Error message: `.form-error` — `text-sm text-rose-800 mt-1`
-Success message: `.form-success` — `text-sm text-emerald-700 mt-1`
+Error message: `.form-error` — `text-sm mt-1` colour: `--brand-danger`
+Success message: `.form-success` — `text-sm mt-1` colour: `--brand-primary`
 
 ### Select Dropdown — `.form-select`
 Same styling as text input, with `appearance-none` and a chevron icon.
@@ -266,23 +421,15 @@ Same styling as text input, with `appearance-none` and a chevron icon.
 Same styling as text input, with `resize-y min-h-[80px]`.
 
 ### Checkbox — `.form-checkbox`
-```
-w-4 h-4
-border border-gray-300 rounded
-accent-zinc-600
-```
-Label inline: `.form-check-label` — `text-base text-zinc-600 ml-2`
+`w-4 h-4 rounded` — border: `--control-border`, accent: `--control-accent`
+
+Label inline: `.form-check-label` — `text-base ml-2` colour: `--text-body`
 
 ### Radio Button — `.form-radio`
-```
-w-4 h-4
-border border-gray-300
-accent-zinc-600
-```
-Label inline: `.form-check-label` — `text-base text-zinc-600 ml-2`
+`w-4 h-4` — border: `--control-border`, accent: `--control-accent`
 
 ### Toggle Switch
-Use a styled checkbox with peer classes, zinc-600 for the active state, gray-300 for inactive.
+Use a styled checkbox with peer classes. Active state: `--control-accent`, inactive: `--status-neutral`.
 
 ---
 
@@ -290,12 +437,12 @@ Use a styled checkbox with peer classes, zinc-600 for the active state, gray-300
 
 Small coloured dots to indicate state. Use inline with text or in tables/lists. Base class: `.status-dot`
 
-| State | Semantic Class | Tailwind | Icon alternative |
+| State | Semantic Class | Colour Variable | Icon alternative |
 | --- | --- | --- | --- |
-| Positive | `.status-positive` | `w-2.5 h-2.5 rounded-full bg-emerald-700` | `ri-checkbox-circle-fill text-emerald-700` |
-| Negative | `.status-negative` | `w-2.5 h-2.5 rounded-full bg-rose-800` | `ri-close-circle-fill text-rose-800` |
-| Warning | `.status-warning` | `w-2.5 h-2.5 rounded-full bg-orange-500` | `ri-alert-fill text-orange-500` |
-| Neutral | `.status-neutral` | `w-2.5 h-2.5 rounded-full bg-gray-300` | `ri-checkbox-blank-circle-fill text-gray-300` |
+| Positive | `.status-positive` | `--brand-primary` | `ri-checkbox-circle-fill` |
+| Negative | `.status-negative` | `--brand-danger` | `ri-close-circle-fill` |
+| Warning | `.status-warning` | `--brand-warning` | `ri-alert-fill` |
+| Neutral | `.status-neutral` | `--status-neutral` | `ri-checkbox-blank-circle-fill` |
 
 Usage: `<span class="status-dot status-positive"></span>`
 
@@ -303,13 +450,13 @@ Usage: `<span class="status-dot status-positive"></span>`
 
 These classes bundle icon, colour, and sizing. You just write the text — the icon appears automatically.
 
-| State | Semantic Class | Icon (auto) | Colour |
+| State | Semantic Class | Icon (auto) | Colour Variable |
 | --- | --- | --- | --- |
-| Positive | `.inline-positive` | `ri-checkbox-circle-fill` | Emerald-700 |
-| Negative | `.inline-negative` | `ri-close-circle-fill` | Rose-800 |
-| Warning | `.inline-warning` | `ri-alert-fill` | Orange-500 |
+| Positive | `.inline-positive` | `ri-checkbox-circle-fill` | `--brand-primary` |
+| Negative | `.inline-negative` | `ri-close-circle-fill` | `--brand-danger` |
+| Warning | `.inline-warning` | `ri-alert-fill` | `--brand-warning` |
 
-Usage: `<span class="inline-positive">Verified</span>` — renders as the green tick icon followed by "Verified".
+Usage: `<span class="inline-positive">Verified</span>` — renders as the tick icon followed by "Verified".
 
 ---
 
@@ -317,38 +464,32 @@ Usage: `<span class="inline-positive">Verified</span>` — renders as the green 
 
 ### Card Standard — `.card-standard`
 Standard content container.
-```
-bg-white
-rounded-xl
-shadow-sm
-p-4
-border border-stone-200
-```
+
+| Property | Value |
+| --- | --- |
+| Background | `--surface-card` |
+| Border | `--border-light` |
+| Layout | `rounded-xl shadow-sm p-4` |
 
 ### Card Light — `.card-light`
 Lightweight container, minimal elevation.
-```
-bg-stone-50
-rounded-lg
-px-6 py-3
-border border-stone-200
-```
+
+| Property | Value |
+| --- | --- |
+| Background | `--surface-card-alt` |
+| Border | `--border-light` |
+| Layout | `rounded-lg px-6 py-3` |
 
 ### Card Prominent (Dialogs & Modals) — `.card-prominent`
-High-emphasis container for modals and overlays. Width is `max-w-lg` (wider than the old `max-w-sm`).
-```
-bg-white
-rounded-xl
-shadow-lg
-border border-stone-200
-w-full max-w-lg mx-4
-text-left
-```
+High-emphasis container for modals and overlays. Width is `max-w-lg`.
 
-Modal overlay backdrop — `.modal-overlay`:
-```
-fixed inset-0 bg-zinc-900/50 flex items-center justify-center
-```
+| Property | Value |
+| --- | --- |
+| Background | `--surface-card` |
+| Border | `--border-light` |
+| Layout | `rounded-xl shadow-lg w-full max-w-lg mx-4 text-left` |
+
+Modal overlay backdrop — `.modal-overlay`: background `--surface-overlay`, layout `fixed inset-0 flex items-center justify-center`
 
 Modal internal structure (all semantic classes):
 - **Header** — `.modal-header` (`px-6 py-3`): heading only above the divider.
@@ -586,26 +727,31 @@ Keep transitions minimal for a wireframe feel. Avoid elaborate animations.
 ## Nav Bar — `.navbar`
 
 Top navigation bar with brand, links, and optional action button.
-```
-bg-white border-b border-stone-200 px-8 py-3
-flex items-center justify-between shadow-sm
-```
 
-| Element | Semantic Class | Definition |
+| Property | Value |
+| --- | --- |
+| Background | `--surface-card` |
+| Border | bottom `--border-light` |
+| Layout | `px-8 py-3 flex items-center justify-between shadow-sm` |
+
+| Element | Semantic Class | Colour Variable |
 | --- | --- | --- |
-| Brand text | `.navbar-brand` | `font-bold text-zinc-800 text-lg` |
-| Nav link | `.navbar-link` | `text-zinc-600 hover:text-zinc-900 text-base` |
+| Brand text | `.navbar-brand` | `--text-title` (`font-bold text-lg`) |
+| Nav link | `.navbar-link` | `--text-body` → hover: `--text-max-contrast` |
 
 ---
 
 ## Footer — `.footer`
 
 Page footer with copyright and links.
-```
-bg-zinc-800 text-zinc-400 px-8 py-6
-flex items-center justify-between text-sm
-```
-Footer links: `.footer-link` — `hover:text-white transition-colors duration-150`
+
+| Property | Value |
+| --- | --- |
+| Background | `--surface-footer` |
+| Text | `--text-placeholder` |
+| Layout | `px-8 py-6 flex items-center justify-between text-sm` |
+
+Footer links: `.footer-link` — hover: `--text-on-dark`
 
 ---
 
@@ -613,12 +759,11 @@ Footer links: `.footer-link` — `hover:text-white transition-colors duration-15
 
 Used in procedural modals for multi-step flows.
 
-| Element | Semantic Class | Tailwind |
-| --- | --- | --- |
-| Active | `.step-active` | `w-7 h-7 rounded-full bg-emerald-700 text-white text-sm font-bold` |
-| Inactive | `.step-inactive` | `w-7 h-7 rounded-full bg-gray-300 text-zinc-500 text-sm font-bold` |
-| Connector | `.step-connector` | `w-8 h-0.5 bg-gray-300` |
-On the final step, replace `btn-next` with `btn-primary` and label it "Finish" with `ri-check-line`.
+| Element | Semantic Class | Background | Text | Layout |
+| --- | --- | --- | --- | --- |
+| Active | `.step-active` | `--brand-primary` | `--brand-on-primary` | `w-7 h-7 rounded-full text-sm font-bold` |
+| Inactive | `.step-inactive` | `--status-neutral` | `--status-inactive-text` | `w-7 h-7 rounded-full text-sm font-bold` |
+| Connector | `.step-connector` | `--status-neutral` | — | `w-8 h-0.5` |
 ---
 
 ## Tables
@@ -627,13 +772,13 @@ On the final step, replace `btn-next` with `btn-primary` and label it "Finish" w
 
 A compact, minimal table for inline data display. No frills — just clean rows of data.
 
-| Element | Semantic Class | Tailwind |
-| --- | --- | --- |
-| Table wrapper | `.table-simple` | `w-auto text-sm border-collapse` |
-| Header cell | `.table-simple th` | `font-bold text-zinc-700 text-left py-2 px-3 border-b border-gray-300` |
-| Body cell | `.table-simple td` | `text-zinc-600 py-2 px-3` |
-| Totals row | `.table-simple .table-totals td` | `font-bold text-zinc-700 border-t border-gray-300` |
-| Number cell | `.table-num` | `text-right` (apply to both `th` and `td`) |
+| Element | Semantic Class | Colour / Border Variables | Layout |
+| --- | --- | --- | --- |
+| Table wrapper | `.table-simple` | — | `w-auto text-sm border-collapse` |
+| Header cell | `.table-simple th` | text: `--text-heading`, border-bottom: `--border-default` | `font-bold text-left py-2 px-3` |
+| Body cell | `.table-simple td` | text: `--text-body` | `py-2 px-3` |
+| Totals row | `.table-simple .table-totals td` | text: `--text-heading`, border-top: `--border-default` | `font-bold` |
+| Number cell | `.table-num` | — | `text-right` (apply to both `th` and `td`) |
 
 Rules:
 - Numbers right-aligned, text left-aligned
@@ -663,26 +808,25 @@ Rules:
 
 A full-width report table for data-heavy screens. Always placed inside a Content Section (see below).
 
-| Element | Semantic Class | Tailwind |
-| --- | --- | --- |
-| Table wrapper | `.table-report` | `w-full text-sm border-collapse` |
-| Header row | `.table-report thead tr` | `bg-zinc-600 text-white` |
-| Header cell | `.table-report th` | `font-bold text-left py-2.5 px-3 sticky top-0 bg-zinc-600` |
-| Body row (even) | `.table-report tbody tr:nth-child(even)` | `bg-stone-50` |
-| Body row (odd) | `.table-report tbody tr:nth-child(odd)` | `bg-white` |
-| Body cell | `.table-report td` | `text-zinc-600 py-2 px-3` |
-| Sortable header | `.table-sort` | Append sort icon: `ri-arrow-up-s-line` / `ri-arrow-down-s-line` |
-| Number cell | `.table-num` | `text-right` |
-| Footer | `.content-section-footer` | `bg-stone-100 border-t border-stone-200 px-4 py-3` |
+| Element | Semantic Class | Colour / Border Variables | Layout |
+| --- | --- | --- | --- |
+| Table wrapper | `.table-report` | — | `w-full text-sm border-collapse` |
+| Header cell | `.table-report th` | bg: `--surface-table-header`, text: `--text-on-dark` | `font-bold text-left py-2.5 px-3 sticky top-0` |
+| Body row (even) | `tr:nth-child(even)` | bg: `--surface-card-alt` | — |
+| Body row (odd) | `tr:nth-child(odd)` | bg: `--surface-card` | — |
+| Body cell | `.table-report td` | text: `--text-body` | `py-2 px-3` |
+| Sort icon | `.table-sort` | `--table-sort-icon` | Append `ri-arrow-up-s-line` / `ri-arrow-down-s-line` |
+| Number cell | `.table-num` | — | `text-right` |
+| Footer | `.content-section-footer` | bg: `--surface-inset`, border: `--border-light` | `px-4 py-3` |
 
 Rules:
 - Full width, inside a Content Section container
-- Zebra striping: alternating `white` / `stone-50` rows
+- Zebra striping: alternating `--surface-card` / `--surface-card-alt` rows
 - Sticky header row (stays visible on scroll)
 - Sortable columns show up/down chevrons next to header text
 - Number columns right-aligned
 - Results/totals sit in a **non-scrollable footer** below the scrollable table body
-- Content section header uses `zinc-700` (darker); table column headers use `zinc-600` (lighter) — two distinct grey levels
+- Content section header uses `--surface-section-header` (darker); table column headers use `--surface-table-header` (lighter) — two distinct levels
 
 ```html
 <div class="content-section">
@@ -702,53 +846,59 @@ Rules:
     </table>
   </div>
   <div class="content-section-footer">
-    <span class="font-bold text-zinc-700">Total Revenue: $20,600</span>
+    <span class="type-body-emphasis">Total Revenue: $20,600</span>
   </div>
 </div>
 ```
 
+On the final step, replace `btn-next` with `btn-primary` and label it "Finish" with `ri-check-line`.
 ---
 
 ## Charts
 
 CDN dependency: **Chart.js** — a single lightweight charting library, no build tools required. Can be swapped for more powerful alternatives (D3.js, Apache ECharts) if the prototype evolves into production.
 
-### Chart Greyscale Palette
+### Chart Data Series
 
-Charts use greyscale tones to stay within the wireframe aesthetic:
+Charts use the `--chart-series-*` variables. These default to a spread of neutral tones for the wireframe aesthetic, but a re-branded app could use coloured series.
 
-| Series | Hex | Tailwind Equivalent | Usage |
-| --- | --- | --- | --- |
-| Primary | #3F3F46 | `zinc-700` | First/main series |
-| Secondary | #71717A | `zinc-500` | Second series |
-| Tertiary | #D1D5DB | `gray-300` | Third series |
-| Quaternary | #E7E5E4 | `stone-200` | Fourth series |
+| Variable | Default Hex | Usage |
+| --- | --- | --- |
+| `--chart-series-1` | #3F3F46 | Primary/first data series |
+| `--chart-series-2` | #71717A | Second data series |
+| `--chart-series-3` | #D1D5DB | Third data series |
+| `--chart-series-4` | #E7E5E4 | Fourth data series |
+| `--chart-axis-label` | #71717A | Axis labels, legend text |
+| `--chart-gridline` | #E7E5E4 | Gridlines |
+| `--chart-segment-border` | #FFFFFF | Pie/doughnut segment borders |
 
-Gridlines and axes use `stone-200` (#E7E5E4). Axis labels use `zinc-500`.
-
+All button colours come from CSS variables. Layout (padding, radius, shadows) uses Tailwind `@apply`.
 ### Defined Chart Types
 
 **Bar Chart**
-- Bars: `zinc-500`
-- Gridlines: `stone-200`
+- Bars: `--chart-series-2`
+- Gridlines: `--chart-gridline`
 - X-axis labels visible, Y-axis with grid
 
 **Line Chart**
-- Line: `zinc-700`, 2px weight
-- Data points: filled circles in `zinc-700`
-- Gridlines: `stone-200`
+- Line & points: `--chart-series-1`, 2px weight
+- Gridlines: `--chart-gridline`
 
 **Pie Chart**
-- Segments: `zinc-700`, `zinc-500`, `gray-300`, `stone-200` (in order for up to 4 segments)
+- Segments: `--chart-series-1` through `--chart-series-4` (in order, supports up to 4)
+- Segment borders: `--chart-segment-border`
 - Legend below chart
 
 ### Chart.js Configuration Defaults
 
 ```javascript
-// Apply these defaults at the top of your script
-Chart.defaults.font.family = '"Balsamiq Sans", cursive';
-Chart.defaults.color = '#71717A';           // zinc-500 for labels
-Chart.defaults.borderColor = '#E7E5E4';     // stone-200 for gridlines
+// Read brand variables from CSS at runtime
+const rootStyle = getComputedStyle(document.documentElement);
+const cv = (name) => rootStyle.getPropertyValue(name).trim();
+
+Chart.defaults.font.family = `${cv('--brand-font')}, cursive`;
+Chart.defaults.color = cv('--chart-axis-label');
+Chart.defaults.borderColor = cv('--chart-gridline');
 Chart.defaults.plugins.legend.labels.usePointStyle = true;
 ```
 
@@ -760,12 +910,12 @@ Chart.defaults.plugins.legend.labels.usePointStyle = true;
 
 A grouping container for form fields, tables, or mixed content on busy screens. Gives visual structure with a coloured header bar.
 
-| Element | Semantic Class | Tailwind |
-| --- | --- | --- |
-| Wrapper | `.content-section` | `border border-stone-200 rounded-lg overflow-hidden` |
-| Header | `.content-section-header` | `bg-zinc-700 text-white font-bold text-sm px-4 py-2` |
-| Body | `.content-section-body` | `bg-white px-4 py-4` |
-| Footer | `.content-section-footer` | `bg-stone-100 border-t border-stone-200 px-4 py-3` |
+| Element | Semantic Class | Colour / Border Variables | Layout |
+| --- | --- | --- | --- |
+| Wrapper | `.content-section` | border: `--border-light` | `rounded-lg overflow-hidden` |
+| Header | `.content-section-header` | bg: `--surface-section-header`, text: `--text-on-dark` | `font-bold text-sm px-4 py-2` |
+| Body | `.content-section-body` | bg: `--surface-card` | `px-4 py-4` |
+| Footer | `.content-section-footer` | bg: `--surface-inset`, border-top: `--border-light` | `px-4 py-3` |
 
 Layout rules:
 - **Single section**: full width
@@ -847,9 +997,250 @@ Rules:
 
 Semantic classes for page structure (used in showcase, reusable in projects):
 
-| Element | Semantic Class | Tailwind |
-| --- | --- | --- |
-| Page body | `.page-bg` | `bg-stone-50 text-zinc-700` |
-| Section divider | `.section-divider` | `border-b-4 border-zinc-800` |
-| Section label | `.section-label` | `bg-zinc-700 text-white px-8 py-2` |
-| Label text | `.section-label-text` | `text-sm font-bold tracking-widest uppercase` |
+| Element | Semantic Class | Colour Variables | Layout |
+| --- | --- | --- | --- |
+| Page body | `.page-bg` | bg: `--surface-page`, text: `--text-heading` | `text-base` |
+| Section divider | `.section-divider` | border: `--border-section` | `border-b-4` |
+| Section label | `.section-label` | bg: `--surface-section-header`, text: `--text-on-dark` | `px-8 py-2` |
+| Label text | `.section-label-text` | — | `text-sm font-bold tracking-widest uppercase` |
+
+---
+
+## Left Sidebar — `.sidebar`
+
+
+### Sidebar Container
+
+| Element | Semantic Class | Colour Variables | Layout |
+| --- | --- | --- | --- |
+| Sidebar (expanded) | `.sidebar` | bg: `--surface-sidebar`, text: `--text-on-dark` | `w-56 flex flex-col h-full transition-all duration-200` |
+| Sidebar (collapsed) | `.sidebar.sidebar-collapsed` | (inherited) | `w-16` (overrides width only) |
+
+### Sidebar Elements
+
+| Element | Semantic Class | Colour Variables | Layout |
+| --- | --- | --- | --- |
+| Brand area | `.sidebar-brand` | text: `--text-on-dark`, border: `--border-strong` | `px-4 py-4 font-bold text-lg flex items-center gap-3` |
+| Nav item | `.sidebar-item` | text: `--text-on-dark-muted` → hover bg: `--surface-section-header`, text: `--text-on-dark` | `flex items-center gap-3 px-4 py-2.5 text-sm rounded-lg mx-2` |
+| Nav item (active) | `.sidebar-item-active` | bg: `--surface-section-header`, text: `--text-on-dark` | `font-bold` |
+| Section label | `.sidebar-section-label` | text: `--text-on-dark-faint` | `text-xs font-bold uppercase tracking-wider px-4 pt-4 pb-1` |
+| Collapse toggle | `.sidebar-toggle` | text: `--control-icon-muted` → hover: `--text-on-dark` | `flex items-center justify-center p-2 cursor-pointer` |
+| Item icon | `.sidebar-item i` | — | `text-lg w-5 text-center shrink-0` |
+
+### Collapsed State Behaviour
+
+When `.sidebar-collapsed` is applied:
+- Labels and section labels are hidden (`display: none` or `opacity: 0`)
+- Icons remain centred in the narrow sidebar
+- Brand area shows only icon/logo, no text
+- Tooltips (optional) can show label on hover — not required for wireframes
+
+### Responsive Rule
+
+On screens below `lg:` breakpoint (tablet and smaller):
+- Sidebar is hidden by default
+- A hamburger icon (`.sidebar-mobile-trigger`, using `ri-menu-line`) in the top bar opens the sidebar as an overlay
+- Overlay sidebar uses `position: fixed; z-index: 40` with a backdrop
+
+```html
+<!-- Expanded sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <i class="ri-layout-grid-line text-xl"></i>
+    <span>AppName</span>
+  </div>
+  <div class="px-3 pt-2 pb-1">
+    <button class="sidebar-toggle w-full">
+      <i class="ri-arrow-left-double-line"></i>
+      <span class="text-xs">Collapse</span>
+    </button>
+  </div>
+  <nav class="flex flex-col gap-1 py-3">
+    <span class="sidebar-section-label">Main</span>
+    <a href="#" class="sidebar-item sidebar-item-active">
+      <i class="ri-home-line"></i> <span>Dashboard</span>
+    </a>
+    <a href="#" class="sidebar-item">
+      <i class="ri-file-list-line"></i> <span>Reports</span>
+    </a>
+    <span class="sidebar-section-label">Admin</span>
+    <a href="#" class="sidebar-item">
+      <i class="ri-settings-3-line"></i> <span>Settings</span>
+    </a>
+  </nav>
+</aside>
+```
+
+---
+
+## Right Panel (Slide-Out) — `.panel-right`
+
+A slide-out panel for contextual configuration, filters, or settings. **Overlays** the content area (doesn't push it aside). Can be dismissed or kept open (pinned).
+
+### Panel Container
+
+| Element | Semantic Class | Colour Variables | Layout |
+| --- | --- | --- | --- |
+| Panel wrapper | `.panel-right` | bg: `--surface-card`, border: `--border-light` | `absolute top-0 right-0 h-full w-80 shadow-lg z-40 translate-x-full transition-transform duration-200` |
+| Panel (open) | `.panel-right.panel-open` | — | `translate-x-0` (slides into view) |
+| Panel backdrop | `.panel-backdrop` | bg: `--surface-overlay-light` | `absolute inset-0 z-30` (click to dismiss) |
+
+### Panel Elements
+
+| Element | Semantic Class | Colour Variables | Layout |
+| --- | --- | --- | --- |
+| Header | `.panel-right-header` | border-bottom: `--border-light` | `flex items-center justify-between px-5 py-3` |
+| Header title | `.panel-right-title` | text: `--text-title` | `font-bold text-base` |
+| Close button | `.panel-right-close` | text: `--control-icon-muted` → hover: `--control-icon-muted-hover` | `text-xl cursor-pointer` (uses `ri-close-line`) |
+| Body | `.panel-right-body` | — | `px-5 py-4 overflow-y-auto flex-1` |
+| Footer | `.panel-right-footer` | bg: `--surface-inset`, border-top: `--border-light` | `px-5 py-3` |
+
+### Usage Convention — `panel-default-open`
+
+This is a **prototype-level convention**, not a CSS class. When building a screen that has a right panel:
+- If the panel should be visible when the user first arrives on the screen, add the `panel-open` class in the HTML (panel starts open)
+- If the panel should be hidden until the user requests it, omit `panel-open` (panel starts closed)
+
+Document this per-screen in your prototype's own notes. The trigger icon (typically `ri-filter-3-line` or `ri-settings-3-line`) should sit in the content area's top bar or header.
+
+### Responsive Rule
+
+The panel is always an overlay on all screen sizes — no special responsive changes needed. On narrow screens the backdrop ensures the panel doesn't obscure navigation.
+
+```html
+<!-- Right panel (hidden by default — add panel-open to show) -->
+<div class="panel-backdrop hidden" id="panel-backdrop"></div>
+<aside class="panel-right" id="config-panel">
+  <div class="panel-right-header">
+    <span class="panel-right-title">Report Filters</span>
+    <button class="panel-right-close"><i class="ri-close-line"></i></button>
+  </div>
+  <div class="panel-right-body space-y-4">
+    <!-- Filter controls go here (form-label + form-select, checkboxes, etc.) -->
+    <div>
+      <label class="form-label">Date Range</label>
+      <select class="form-select">
+        <option>Last 7 days</option>
+        <option>Last 30 days</option>
+        <option>This quarter</option>
+      </select>
+    </div>
+  </div>
+  <div class="panel-right-footer">
+    <button class="btn-primary w-full">
+      <span class="flex items-center justify-center gap-2"><i class="ri-check-line"></i> Apply Filters</span>
+    </button>
+  </div>
+</aside>
+```
+
+---
+
+## App Shell — `.app-shell`
+
+The top-level layout that composes a left sidebar, main content area, and optional right panel into a full application frame. Use this as the starting structure for any multi-screen prototype.
+
+### App Shell Container
+
+| Element | Semantic Class | Colour Variables | Layout |
+| --- | --- | --- | --- |
+| Shell wrapper | `.app-shell` | bg: `--surface-page` | `flex h-screen overflow-hidden` |
+| Sidebar slot | `.app-shell-sidebar` | (uses `.sidebar` styles) | First child |
+| Content area | `.app-shell-content` | — | `flex-1 flex flex-col overflow-hidden` |
+| Content header | `.app-shell-header` | bg: `--surface-card`, border: `--border-light` | `flex items-center justify-between px-6 py-3 shrink-0` |
+| Content body | `.app-shell-body` | — | `flex-1 overflow-y-auto px-6 py-6` |
+| Panel slot | `.app-shell-panel` | (uses `.panel-right` styles) | Overlays, not a grid slot |
+
+### Layout Behaviour
+
+- The sidebar and content area sit side by side using flexbox
+- When the sidebar collapses, the content area automatically grows to fill the space
+- The right panel overlays on top of everything (fixed position, z-index above content)
+- The content header provides a place for page title, breadcrumbs, and trigger buttons (e.g. filter icon to open the right panel)
+
+```html
+<div class="app-shell">
+  <!-- Left sidebar -->
+  <aside class="sidebar">
+    <!-- sidebar content (see Left Sidebar section) -->
+  </aside>
+
+  <!-- Main content -->
+  <div class="app-shell-content">
+    <header class="app-shell-header">
+      <h1 class="type-title">Dashboard</h1>
+      <button class="btn-ghost text-sm" id="filter-toggle">
+        <span class="flex items-center gap-2"><i class="ri-filter-3-line"></i> Filters</span>
+      </button>
+    </header>
+    <main class="app-shell-body">
+      <!-- Page content goes here -->
+    </main>
+  </div>
+
+  <!-- Right panel (overlay) -->
+  <div class="panel-backdrop hidden" id="panel-backdrop"></div>
+  <aside class="panel-right" id="config-panel">
+    <!-- panel content (see Right Panel section) -->
+  </aside>
+</div>
+```
+
+---
+
+## How to Re-brand
+
+To take a prototype built with this style guide and apply your own brand, you only need to change the `:root` variables block. Every semantic class and all HTML stays untouched.
+
+### Step 1: Swap the font
+
+In the `<head>`, replace the Google Fonts `<link>` tag with your brand font's CDN link (or a local `@font-face`). Then update the variable:
+
+```css
+--brand-font: "Inter";  /* or whatever your brand font is */
+```
+
+The `tailwind.config` already reads from `var(--brand-font)`, so the font propagates everywhere automatically.
+
+### Step 2: Change the accent colours
+
+Update the `--brand-*` variables to your brand's colour palette:
+
+```css
+--brand-primary:       #2563EB;
+--brand-primary-hover: #1D4ED8;
+--brand-danger:        #DC2626;
+--brand-danger-hover:  #B91C1C;
+--brand-warning:       #D97706;
+```
+
+### Step 3: Adjust surfaces, text, borders, and controls
+
+Because every variable is named by **role** (not by colour), you can go through each group and set the right value for your brand:
+
+- **`--surface-*`**: Set page background, card background, sidebar/footer colours. If your brand has a dark sidebar, keep `--surface-sidebar` dark. If you want a light sidebar, change it — the text variables (`--text-on-dark`, `--text-on-dark-muted`) may need to flip to dark text.
+- **`--text-*`**: Set your text hierarchy. Title should be your darkest text, placeholder your lightest.
+- **`--border-*`**: Usually stays subtle — just pick borders that work with your surface colours.
+- **`--control-*`**: Set button backgrounds, focus rings, checkbox accent. These are often close to your border and surface tones.
+- **`--chart-*`**: Set your 4 data series colours. For a branded app, you might use brand-tinted colours instead of neutrals.
+
+### Step 4: Update `--brand-on-primary` / `--brand-on-danger` if needed
+
+If your new accent colours are light (e.g. a pastel primary), flip these to dark text:
+
+```css
+--brand-on-primary: #18181B;  /* dark text on light primary */
+```
+
+Similarly, if your sidebar/footer change from dark to light, swap `--text-on-dark` to a dark colour.
+
+### What NOT to change
+
+- **HTML structure** — all `class=""` references stay the same
+- **Semantic class names** — `.btn-primary`, `.type-heading`, etc. are stable
+- **Layout/spacing values** — `px-6`, `rounded-lg`, `gap-3` etc. are structural, not brand-specific
+- **Tailwind \****`@apply`** lines in component classes — these handle layout only
+
+### Quick test
+
+After changing variables, open `showcase.html` in a browser and scroll through all 7 sections. Every component should reflect the new colours and font. If something looks wrong, check that the relevant component class references a semantic `var(--*)` instead of a hardcoded Tailwind colour.

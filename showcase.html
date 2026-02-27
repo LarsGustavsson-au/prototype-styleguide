@@ -19,13 +19,13 @@
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- Apply Balsamiq Sans globally -->
+  <!-- Apply brand font globally via Tailwind config -->
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
-            sans: ['"Balsamiq Sans"', 'cursive'],
+            sans: ['var(--brand-font)', 'cursive'],
           }
         }
       }
@@ -33,116 +33,252 @@
   </script>
 
   <!-- ============================================================
+       BRAND VARIABLES — Change these to re-brand the entire app.
+       All semantic component classes below reference these variables.
+       To re-skin: update the hex values here, swap the font CDN link
+       above, and everything else follows.
+  ============================================================ -->
+  <style>
+    :root {
+      /* ── Brand Accent Colours ── */
+      --brand-primary:       #047857;  /* emerald-700 — primary actions, positive status */
+      --brand-primary-hover: #065F46;  /* emerald-800 — primary button hover */
+      --brand-danger:        #9F1239;  /* rose-800 — negative/error actions */
+      --brand-danger-hover:  #881337;  /* rose-900 — danger button hover */
+      --brand-warning:       #F97316;  /* orange-500 — warning status only */
+
+      /* ── Text on Accent Backgrounds ── */
+      --brand-on-primary:    #FFFFFF;
+      --brand-on-danger:     #FFFFFF;
+
+      /* ── Subtle Accent Backgrounds (validation) ── */
+      --brand-primary-subtle: #ECFDF5;  /* emerald-50 */
+      --brand-danger-subtle:  #FFF1F2;  /* rose-50 */
+
+      /* ── Surfaces (backgrounds) ── */
+      --surface-page:            #FAFAF9;
+      --surface-card:            #FFFFFF;
+      --surface-card-alt:        #FAFAF9;
+      --surface-inset:           #F5F5F4;
+      --surface-sidebar:         #27272A;
+      --surface-footer:          #27272A;
+      --surface-section-header:  #3F3F46;
+      --surface-table-header:    #52525B;
+      --surface-overlay:         rgba(24, 24, 27, 0.5);
+      --surface-overlay-light:   rgba(24, 24, 27, 0.3);
+
+      /* ── Borders ── */
+      --border-light:            #E7E5E4;
+      --border-default:          #D1D5DB;
+      --border-strong:           #3F3F46;
+      --border-section:          #27272A;
+
+      /* ── Text ── */
+      --text-title:              #27272A;
+      --text-heading:            #3F3F46;
+      --text-body:               #52525B;
+      --text-caption:            #71717A;
+      --text-placeholder:        #9CA3AF;
+      --text-on-dark:            #FFFFFF;
+      --text-on-dark-muted:      #D1D5DB;
+      --text-on-dark-faint:      #71717A;
+      --text-max-contrast:       #18181B;
+
+      /* ── Interactive / Controls ── */
+      --control-bg:              #E7E5E4;
+      --control-bg-hover:        #D1D5DB;
+      --control-bg-strong:       #D1D5DB;
+      --control-bg-strong-hover: #9CA3AF;
+      --control-border:          #D1D5DB;
+      --control-border-strong:   #9CA3AF;
+      --control-focus-border:    #71717A;
+      --control-focus-ring:      #D1D5DB;
+      --control-accent:          #52525B;
+      --control-icon-muted:      #9CA3AF;
+      --control-icon-muted-hover:#3F3F46;
+
+      /* ── Status (non-accent) ── */
+      --status-neutral:          #D1D5DB;
+      --status-inactive-text:    #71717A;
+
+      /* ── Chart Data Series ── */
+      --chart-series-1:          #3F3F46;
+      --chart-series-2:          #71717A;
+      --chart-series-3:          #D1D5DB;
+      --chart-series-4:          #E7E5E4;
+      --chart-axis-label:        #71717A;
+      --chart-gridline:          #E7E5E4;
+      --chart-segment-border:    #FFFFFF;
+
+      /* ── Table-specific ── */
+      --table-sort-icon:         #D1D5DB;
+
+      /* ── Brand Font ── */
+      --brand-font: "Balsamiq Sans";
+    }
+  </style>
+
+  <!-- ============================================================
        SEMANTIC COMPONENT CLASSES
-       Change these definitions to rebrand — all HTML references stay the same.
+       Uses Tailwind @apply for layout/spacing, CSS variables for colours.
+       To rebrand: change the :root variables above — all HTML stays the same.
   ============================================================ -->
   <style type="text/tailwindcss">
     @layer components {
 
       /* ── Page Layout ── */
-      .page-bg         { @apply bg-stone-50 text-zinc-700; }
-      .section-divider { @apply border-b-4 border-zinc-800; }
-      .section-label   { @apply bg-zinc-700 text-white px-8 py-2; }
+      .page-bg         { @apply text-base; background-color: var(--surface-page); color: var(--text-heading); }
+      .section-divider { @apply border-b-4; border-color: var(--border-section); }
+      .section-label   { @apply px-8 py-2; background-color: var(--surface-section-header); color: var(--text-on-dark); }
       .section-label-text { @apply text-sm font-bold tracking-widest uppercase; }
 
       /* ── Typography ── */
-      .type-title       { @apply text-2xl font-bold text-zinc-800; }
-      .type-modal-title { @apply text-xl font-bold text-zinc-800; }
-      .type-heading     { @apply text-lg font-bold text-zinc-700; }
-      .type-body        { @apply text-base font-normal text-zinc-600; }
-      .type-body-emphasis { @apply text-base font-bold text-zinc-700; }
-      .type-caption     { @apply text-sm font-normal text-zinc-500; }
-      .type-muted       { @apply text-sm font-normal text-gray-400; }
+      .type-title       { @apply text-2xl font-bold; color: var(--text-title); }
+      .type-modal-title { @apply text-xl font-bold; color: var(--text-title); }
+      .type-heading     { @apply text-lg font-bold; color: var(--text-heading); }
+      .type-body        { @apply text-base font-normal; color: var(--text-body); }
+      .type-body-emphasis { @apply text-base font-bold; color: var(--text-heading); }
+      .type-caption     { @apply text-sm font-normal; color: var(--text-caption); }
+      .type-muted       { @apply text-sm font-normal; color: var(--text-placeholder); }
 
       /* ── Text Links ── */
-      .text-link       { @apply text-zinc-600 underline underline-offset-2 hover:text-zinc-900 transition-colors duration-150; }
+      .text-link       { @apply underline underline-offset-2 transition-colors duration-150; color: var(--text-body); }
+      .text-link:hover { color: var(--text-max-contrast); }
 
       /* ── Buttons ── */
-      .btn-primary     { @apply bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-6 py-2.5 rounded-lg shadow-sm transition-colors duration-150 cursor-pointer border-none; }
-      .btn-secondary   { @apply bg-stone-200 hover:bg-gray-300 text-zinc-700 font-bold px-6 py-2.5 rounded-lg border border-gray-300 shadow-sm transition-colors duration-150 cursor-pointer; }
-      .btn-danger      { @apply bg-rose-800 hover:bg-rose-900 text-white font-bold px-6 py-2.5 rounded-lg shadow-sm transition-colors duration-150 cursor-pointer border-none; }
-      .btn-ghost       { @apply bg-transparent hover:bg-stone-100 text-zinc-600 font-bold px-6 py-2.5 rounded-lg border border-gray-300 transition-colors duration-150 cursor-pointer; }
-      .btn-cancel      { @apply bg-gray-300 hover:bg-gray-400 text-zinc-700 font-bold px-6 py-2.5 rounded-lg border border-gray-400 transition-colors duration-150 cursor-pointer; }
-      .btn-disabled    { @apply bg-stone-100 text-gray-400 cursor-not-allowed px-6 py-2.5 rounded-lg border border-stone-200 font-bold; }
-      .btn-next        { @apply bg-stone-200 hover:bg-gray-300 text-zinc-700 font-bold px-6 py-2.5 rounded-lg border border-gray-300 shadow-sm transition-colors duration-150 cursor-pointer; }
-      .btn-previous    { @apply bg-stone-200 hover:bg-gray-300 text-zinc-700 font-bold px-6 py-2.5 rounded-lg border border-gray-300 shadow-sm transition-colors duration-150 cursor-pointer; }
+      .btn-primary     { @apply font-bold px-6 py-2.5 rounded-lg shadow-sm transition-colors duration-150 cursor-pointer border-none; background-color: var(--brand-primary); color: var(--brand-on-primary); }
+      .btn-primary:hover { background-color: var(--brand-primary-hover); }
+      .btn-secondary   { @apply font-bold px-6 py-2.5 rounded-lg shadow-sm transition-colors duration-150 cursor-pointer; background-color: var(--control-bg); color: var(--text-heading); border: 1px solid var(--control-border); }
+      .btn-secondary:hover { background-color: var(--control-bg-hover); }
+      .btn-danger      { @apply font-bold px-6 py-2.5 rounded-lg shadow-sm transition-colors duration-150 cursor-pointer border-none; background-color: var(--brand-danger); color: var(--brand-on-danger); }
+      .btn-danger:hover { background-color: var(--brand-danger-hover); }
+      .btn-ghost       { @apply font-bold px-6 py-2.5 rounded-lg transition-colors duration-150 cursor-pointer; background-color: transparent; color: var(--text-body); border: 1px solid var(--control-border); }
+      .btn-ghost:hover { background-color: var(--surface-inset); }
+      .btn-cancel      { @apply font-bold px-6 py-2.5 rounded-lg transition-colors duration-150 cursor-pointer; background-color: var(--control-bg-strong); color: var(--text-heading); border: 1px solid var(--control-border-strong); }
+      .btn-cancel:hover { background-color: var(--control-bg-strong-hover); }
+      .btn-disabled    { @apply cursor-not-allowed px-6 py-2.5 rounded-lg font-bold; background-color: var(--surface-inset); color: var(--text-placeholder); border: 1px solid var(--border-light); }
+      .btn-next        { @apply font-bold px-6 py-2.5 rounded-lg shadow-sm transition-colors duration-150 cursor-pointer; background-color: var(--control-bg); color: var(--text-heading); border: 1px solid var(--control-border); }
+      .btn-next:hover  { background-color: var(--control-bg-hover); }
+      .btn-previous    { @apply font-bold px-6 py-2.5 rounded-lg shadow-sm transition-colors duration-150 cursor-pointer; background-color: var(--control-bg); color: var(--text-heading); border: 1px solid var(--control-border); }
+      .btn-previous:hover { background-color: var(--control-bg-hover); }
 
       /* ── Form Elements ── */
-      .form-label      { @apply text-sm font-bold text-zinc-700 mb-1 block; }
-      .form-helper     { @apply text-sm text-zinc-500 mt-1; }
-      .form-error      { @apply text-sm text-rose-800 mt-1; }
-      .form-success    { @apply text-sm text-emerald-700 mt-1; }
-      .form-input      { @apply w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-zinc-700 placeholder-gray-400 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-gray-300; }
-      .form-input-error   { @apply border-rose-800 focus:border-rose-800 focus:ring-rose-800; }
-      .form-input-success { @apply border-emerald-700 focus:border-emerald-700 focus:ring-emerald-700; }
-      .form-input-disabled { @apply bg-stone-100 text-gray-400 border-stone-200 cursor-not-allowed; }
-      .form-select     { @apply w-full appearance-none bg-white border border-gray-300 rounded-lg px-3 py-2 text-zinc-700 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-gray-300 pr-8; }
-      .form-textarea   { @apply w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-zinc-700 placeholder-gray-400 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-gray-300 resize-y min-h-[80px]; }
-      .form-checkbox   { @apply w-4 h-4 border border-gray-300 rounded accent-zinc-600; }
-      .form-radio      { @apply w-4 h-4 border border-gray-300 accent-zinc-600; }
-      .form-check-label { @apply text-base text-zinc-600 ml-2; }
+      .form-label      { @apply text-sm font-bold mb-1 block; color: var(--text-heading); }
+      .form-helper     { @apply text-sm mt-1; color: var(--text-caption); }
+      .form-error      { @apply text-sm mt-1; color: var(--brand-danger); }
+      .form-success    { @apply text-sm mt-1; color: var(--brand-primary); }
+      .form-input      { @apply w-full rounded-lg px-3 py-2 focus:outline-none; background-color: var(--surface-card); color: var(--text-heading); border: 1px solid var(--control-border); }
+      .form-input::placeholder { color: var(--text-placeholder); }
+      .form-input:focus { border-color: var(--control-focus-border); box-shadow: 0 0 0 1px var(--control-focus-ring); }
+      .form-input-error   { border-color: var(--brand-danger); }
+      .form-input-error:focus { border-color: var(--brand-danger); box-shadow: 0 0 0 1px var(--brand-danger); }
+      .form-input-success { border-color: var(--brand-primary); }
+      .form-input-success:focus { border-color: var(--brand-primary); box-shadow: 0 0 0 1px var(--brand-primary); }
+      .form-input-disabled { @apply cursor-not-allowed; background-color: var(--surface-inset); color: var(--text-placeholder); border-color: var(--border-light); }
+      .form-select     { @apply w-full appearance-none rounded-lg px-3 py-2 pr-8 focus:outline-none; background-color: var(--surface-card); color: var(--text-heading); border: 1px solid var(--control-border); }
+      .form-select:focus { border-color: var(--control-focus-border); box-shadow: 0 0 0 1px var(--control-focus-ring); }
+      .form-textarea   { @apply w-full rounded-lg px-3 py-2 resize-y min-h-[80px] focus:outline-none; background-color: var(--surface-card); color: var(--text-heading); border: 1px solid var(--control-border); }
+      .form-textarea::placeholder { color: var(--text-placeholder); }
+      .form-textarea:focus { border-color: var(--control-focus-border); box-shadow: 0 0 0 1px var(--control-focus-ring); }
+      .form-checkbox   { @apply w-4 h-4 rounded; border: 1px solid var(--control-border); accent-color: var(--control-accent); }
+      .form-radio      { @apply w-4 h-4; border: 1px solid var(--control-border); accent-color: var(--control-accent); }
+      .form-check-label { @apply text-base ml-2; color: var(--text-body); }
 
       /* ── Cards & Containers ── */
-      .card-standard   { @apply bg-white rounded-xl shadow-sm p-4 border border-stone-200; }
-      .card-light      { @apply bg-stone-50 rounded-lg px-6 py-3 border border-stone-200; }
-      .card-prominent  { @apply bg-white rounded-xl shadow-lg border border-stone-200 w-full max-w-lg mx-4 text-left; }
+      .card-standard   { @apply rounded-xl shadow-sm p-4; background-color: var(--surface-card); border: 1px solid var(--border-light); }
+      .card-light      { @apply rounded-lg px-6 py-3; background-color: var(--surface-card-alt); border: 1px solid var(--border-light); }
+      .card-prominent  { @apply rounded-xl shadow-lg w-full max-w-lg mx-4 text-left; background-color: var(--surface-card); border: 1px solid var(--border-light); }
 
       /* ── Modal ── */
-      .modal-overlay   { @apply fixed inset-0 bg-zinc-900/50 flex items-center justify-center z-50; }
+      .modal-overlay   { @apply fixed inset-0 flex items-center justify-center z-50; background-color: var(--surface-overlay); }
       .modal-header    { @apply px-6 py-3; }
-      .modal-divider   { @apply border-gray-300; }
+      .modal-divider   { border-color: var(--border-default); }
       .modal-body      { @apply px-6 py-4; }
       .modal-actions   { @apply flex justify-end gap-3; }
       .modal-actions-split { @apply flex items-center justify-between gap-3; }
 
       /* ── Nav Bar ── */
-      .navbar          { @apply bg-white border-b border-stone-200 px-8 py-3 flex items-center justify-between shadow-sm; }
-      .navbar-brand    { @apply font-bold text-zinc-800 text-lg; }
-      .navbar-link     { @apply text-zinc-600 hover:text-zinc-900 text-base transition-colors duration-150; }
+      .navbar          { @apply px-8 py-3 flex items-center justify-between shadow-sm; background-color: var(--surface-card); border-bottom: 1px solid var(--border-light); }
+      .navbar-brand    { @apply font-bold text-lg; color: var(--text-title); }
+      .navbar-link     { @apply text-base transition-colors duration-150; color: var(--text-body); }
+      .navbar-link:hover { color: var(--text-max-contrast); }
 
       /* ── Status Lights (dots) ── */
       .status-dot      { @apply w-2.5 h-2.5 rounded-full inline-block; }
-      .status-positive { @apply bg-emerald-700; }
-      .status-negative { @apply bg-rose-800; }
-      .status-warning  { @apply bg-orange-500; }
-      .status-neutral  { @apply bg-gray-300; }
+      .status-positive { background-color: var(--brand-primary); }
+      .status-negative { background-color: var(--brand-danger); }
+      .status-warning  { background-color: var(--brand-warning); }
+      .status-neutral  { background-color: var(--status-neutral); }
 
       /* ── Inline Status (icon + text — user supplies only the copy) ── */
-      .inline-positive { @apply inline-flex items-center gap-1 text-sm text-emerald-700; }
-      .inline-negative { @apply inline-flex items-center gap-1 text-sm text-rose-800; }
-      .inline-warning  { @apply inline-flex items-center gap-1 text-sm text-orange-500; }
+      .inline-positive { @apply inline-flex items-center gap-1 text-sm; color: var(--brand-primary); }
+      .inline-negative { @apply inline-flex items-center gap-1 text-sm; color: var(--brand-danger); }
+      .inline-warning  { @apply inline-flex items-center gap-1 text-sm; color: var(--brand-warning); }
 
       /* ── Footer ── */
-      .footer          { @apply bg-zinc-800 text-zinc-400 px-8 py-6 flex items-center justify-between text-sm; }
-      .footer-link     { @apply hover:text-white transition-colors duration-150; }
+      .footer          { @apply px-8 py-6 flex items-center justify-between text-sm; background-color: var(--surface-footer); color: var(--text-placeholder); }
+      .footer-link     { @apply transition-colors duration-150; }
+      .footer-link:hover { color: var(--text-on-dark); }
 
       /* ── Tables ── */
       .table-simple       { @apply w-auto text-sm border-collapse; }
-      .table-simple th    { @apply font-bold text-zinc-700 text-left py-2 px-3 border-b border-gray-300; }
-      .table-simple td    { @apply text-zinc-600 py-2 px-3; }
-      .table-simple .table-totals td { @apply font-bold text-zinc-700 border-t border-gray-300; }
+      .table-simple th    { @apply font-bold text-left py-2 px-3; color: var(--text-heading); border-bottom: 1px solid var(--border-default); }
+      .table-simple td    { @apply py-2 px-3; color: var(--text-body); }
+      .table-simple .table-totals td { @apply font-bold; color: var(--text-heading); border-top: 1px solid var(--border-default); }
       .table-num          { @apply text-right; }
 
       .table-report       { @apply w-full text-sm border-collapse; }
-      .table-report th    { @apply font-bold text-left py-2.5 px-3 sticky top-0 bg-zinc-600 text-white; }
-      .table-report td    { @apply text-zinc-600 py-2 px-3; }
-      .table-report tbody tr:nth-child(even) { @apply bg-stone-50; }
-      .table-report tbody tr:nth-child(odd)  { @apply bg-white; }
-      .table-sort         { @apply ml-1 text-zinc-300; }
+      .table-report th    { @apply font-bold text-left py-2.5 px-3 sticky top-0; background-color: var(--surface-table-header); color: var(--text-on-dark); }
+      .table-report td    { @apply py-2 px-3; color: var(--text-body); }
+      .table-report tbody tr:nth-child(even) { background-color: var(--surface-card-alt); }
+      .table-report tbody tr:nth-child(odd)  { background-color: var(--surface-card); }
+      .table-sort         { @apply ml-1; color: var(--table-sort-icon); }
 
       /* ── Content Sections ── */
-      .content-section        { @apply border border-stone-200 rounded-lg overflow-hidden; }
-      .content-section-header { @apply bg-zinc-700 text-white font-bold text-sm px-4 py-2; }
-      .content-section-body   { @apply bg-white px-4 py-4; }
-      .content-section-footer { @apply bg-stone-100 border-t border-stone-200 px-4 py-3; }
+      .content-section        { @apply rounded-lg overflow-hidden; border: 1px solid var(--border-light); }
+      .content-section-header { @apply font-bold text-sm px-4 py-2; background-color: var(--surface-section-header); color: var(--text-on-dark); }
+      .content-section-body   { @apply px-4 py-4; background-color: var(--surface-card); }
+      .content-section-footer { @apply px-4 py-3; background-color: var(--surface-inset); border-top: 1px solid var(--border-light); }
 
       /* ── Field Row ── */
       .field-row { @apply flex flex-col sm:flex-row gap-4; }
 
       /* ── Step Indicators ── */
-      .step-active     { @apply w-7 h-7 rounded-full bg-emerald-700 text-white text-sm font-bold flex items-center justify-center; }
-      .step-inactive   { @apply w-7 h-7 rounded-full bg-gray-300 text-zinc-500 text-sm font-bold flex items-center justify-center; }
-      .step-connector  { @apply w-8 h-0.5 bg-gray-300; }
+      .step-active     { @apply w-7 h-7 rounded-full text-sm font-bold flex items-center justify-center; background-color: var(--brand-primary); color: var(--brand-on-primary); }
+      .step-inactive   { @apply w-7 h-7 rounded-full text-sm font-bold flex items-center justify-center; background-color: var(--status-neutral); color: var(--status-inactive-text); }
+      .step-connector  { @apply w-8; height: 2px; background-color: var(--status-neutral); }
+
+      /* ── Left Sidebar ── */
+      .sidebar              { @apply w-56 flex flex-col h-full transition-all duration-200; background-color: var(--surface-sidebar); color: var(--text-on-dark); }
+      .sidebar.sidebar-collapsed { @apply w-16; }
+      .sidebar-brand        { @apply px-4 py-4 font-bold text-lg flex items-center gap-3; color: var(--text-on-dark); border-bottom: 1px solid var(--border-strong); }
+      .sidebar-item         { @apply flex items-center gap-3 px-4 py-2.5 text-sm rounded-lg mx-2 transition-colors duration-150 cursor-pointer; color: var(--text-on-dark-muted); }
+      .sidebar-item:hover   { background-color: var(--surface-section-header); color: var(--text-on-dark); }
+      .sidebar-item-active  { @apply font-bold; background-color: var(--surface-section-header); color: var(--text-on-dark); }
+      .sidebar-section-label { @apply text-xs font-bold uppercase tracking-wider px-4 pt-4 pb-1; color: var(--text-on-dark-faint); }
+      .sidebar-toggle       { @apply flex items-center justify-center p-2 transition-colors duration-150 cursor-pointer; color: var(--control-icon-muted); }
+      .sidebar-toggle:hover { color: var(--text-on-dark); }
+
+      /* ── Right Panel (Slide-Out) ── */
+      .panel-right          { @apply absolute top-0 right-0 h-full w-80 shadow-lg z-40 flex flex-col transition-transform duration-200 translate-x-full; background-color: var(--surface-card); border-left: 1px solid var(--border-light); }
+      .panel-right.panel-open { @apply translate-x-0; }
+      .panel-backdrop       { @apply absolute inset-0 z-30; background-color: var(--surface-overlay-light); }
+      .panel-right-header   { @apply flex items-center justify-between px-5 py-3 shrink-0; border-bottom: 1px solid var(--border-light); }
+      .panel-right-title    { @apply font-bold text-base; color: var(--text-title); }
+      .panel-right-close    { @apply text-xl cursor-pointer transition-colors duration-150; color: var(--control-icon-muted); }
+      .panel-right-close:hover { color: var(--control-icon-muted-hover); }
+      .panel-right-body     { @apply px-5 py-4 overflow-y-auto flex-1; }
+      .panel-right-footer   { @apply px-5 py-3 shrink-0; background-color: var(--surface-inset); border-top: 1px solid var(--border-light); }
+
+      /* ── App Shell ── */
+      .app-shell            { @apply flex h-full overflow-hidden; background-color: var(--surface-page); }
+      .app-shell-content    { @apply flex-1 flex flex-col overflow-hidden; }
+      .app-shell-header     { @apply flex items-center justify-between px-6 py-3 shrink-0; background-color: var(--surface-card); border-bottom: 1px solid var(--border-light); }
+      .app-shell-body       { @apply flex-1 overflow-y-auto px-6 py-6; }
+
+      /* ── Toggle Switch ── */
+      .toggle-track         { @apply w-10 h-5 rounded-full transition-colors duration-150; background-color: var(--status-neutral); }
+      .toggle-thumb         { @apply absolute top-0.5 left-0.5 w-4 h-4 rounded-full shadow transition-all duration-150; background-color: var(--surface-card); }
     }
   </style>
 
@@ -151,6 +287,9 @@
     .inline-positive::before { content: "\eb80"; font-family: "remixicon"; }  /* ri-checkbox-circle-fill */
     .inline-negative::before { content: "\eb96"; font-family: "remixicon"; }  /* ri-close-circle-fill */
     .inline-warning::before  { content: "\ea20"; font-family: "remixicon"; }  /* ri-alert-fill */
+
+    /* Toggle switch: checked state changes track colour */
+    .peer:checked ~ .toggle-track { background-color: var(--control-accent); }
   </style>
 </head>
 <body class="page-bg">
@@ -213,7 +352,7 @@
         <!-- Card 1 — Positive status -->
         <div class="card-standard">
           <div class="flex items-start justify-between mb-3">
-            <i class="ri-shield-check-line text-3xl text-zinc-500"></i>
+            <i class="ri-shield-check-line text-3xl type-caption"></i>
             <span class="flex items-center gap-1.5 type-caption">
               <span class="status-dot status-positive"></span>
               Active
@@ -226,7 +365,7 @@
         <!-- Card 2 — Warning status -->
         <div class="card-standard">
           <div class="flex items-start justify-between mb-3">
-            <i class="ri-notification-line text-3xl text-zinc-500"></i>
+            <i class="ri-notification-line text-3xl type-caption"></i>
             <span class="flex items-center gap-1.5 type-caption">
               <span class="status-dot status-warning"></span>
               Warning
@@ -239,7 +378,7 @@
         <!-- Card 3 — Negative status -->
         <div class="card-standard">
           <div class="flex items-start justify-between mb-3">
-            <i class="ri-cloud-line text-3xl text-zinc-500"></i>
+            <i class="ri-cloud-line text-3xl type-caption"></i>
             <span class="flex items-center gap-1.5 type-caption">
               <span class="status-dot status-negative"></span>
               Error
@@ -252,7 +391,7 @@
         <!-- Card 4 — Neutral status -->
         <div class="card-standard">
           <div class="flex items-start justify-between mb-3">
-            <i class="ri-calendar-line text-3xl text-zinc-500"></i>
+            <i class="ri-calendar-line text-3xl type-caption"></i>
             <span class="flex items-center gap-1.5 type-caption">
               <span class="status-dot status-neutral"></span>
               Idle
@@ -265,7 +404,7 @@
         <!-- Card 5 — Icon status lights variant -->
         <div class="card-standard">
           <div class="flex items-start justify-between mb-3">
-            <i class="ri-user-line text-3xl text-zinc-500"></i>
+            <i class="ri-user-line text-3xl type-caption"></i>
             <span class="inline-positive">Verified</span>
           </div>
           <h4 class="type-body-emphasis mb-1">User Accounts</h4>
@@ -294,16 +433,16 @@
     <div class="px-8 pb-8">
       <h3 class="type-heading mb-4">Status Light Reference</h3>
       <div class="card-standard flex gap-8 flex-wrap">
-        <span class="flex items-center gap-2 type-caption text-zinc-600">
+        <span class="flex items-center gap-2 type-body text-sm">
           <span class="status-dot status-positive"></span> Positive / Active
         </span>
-        <span class="flex items-center gap-2 type-caption text-zinc-600">
+        <span class="flex items-center gap-2 type-body text-sm">
           <span class="status-dot status-negative"></span> Negative / Error
         </span>
-        <span class="flex items-center gap-2 type-caption text-zinc-600">
+        <span class="flex items-center gap-2 type-body text-sm">
           <span class="status-dot status-warning"></span> Warning
         </span>
-        <span class="flex items-center gap-2 type-caption text-zinc-600">
+        <span class="flex items-center gap-2 type-body text-sm">
           <span class="status-dot status-neutral"></span> Neutral / Idle
         </span>
         <span class="inline-positive">Verified</span>
@@ -395,7 +534,7 @@
               <option>United Kingdom</option>
               <option>United States</option>
             </select>
-            <i class="ri-arrow-down-s-line absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none"></i>
+            <i class="ri-arrow-down-s-line absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" style="color: var(--control-icon-muted)"></i>
           </div>
         </div>
 
@@ -449,8 +588,8 @@
           <label class="flex items-center gap-3 cursor-pointer">
             <div class="relative">
               <input type="checkbox" checked id="toggle" class="sr-only peer">
-              <div class="w-10 h-5 bg-gray-300 rounded-full peer peer-checked:bg-zinc-600 transition-colors duration-150"></div>
-              <div class="absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-all duration-150 peer-checked:translate-x-5"></div>
+              <div class="toggle-track"></div>
+              <div class="toggle-thumb peer-checked:translate-x-5"></div>
             </div>
             <span class="form-check-label">Push notifications enabled</span>
           </label>
@@ -551,15 +690,15 @@
             </table>
           </div>
           <div class="content-section-footer flex justify-between">
-            <span class="font-bold text-zinc-700">10 products · 2 regions</span>
-            <span class="font-bold text-zinc-700">Total Revenue: $501,400</span>
+            <span class="type-body-emphasis">10 products · 2 regions</span>
+            <span class="type-body-emphasis">Total Revenue: $501,400</span>
           </div>
         </div>
       </div>
 
       <!-- ── Charts ── -->
       <div>
-        <h3 class="type-heading mb-4">Charts (Chart.js — Greyscale Palette)</h3>
+        <h3 class="type-heading mb-4">Charts (Chart.js — Semantic Series Colours)</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
           <!-- Bar Chart -->
@@ -876,13 +1015,209 @@
   </section>
 
   <!-- ============================================================
+       SECTION 7: APP SHELL
+  ============================================================ -->
+  <section class="section-divider">
+
+    <div class="section-label">
+      <p class="section-label-text">Section 7 — App Shell (Sidebar + Content + Panel)</p>
+    </div>
+
+    <div class="px-8 py-10">
+      <p class="type-caption mb-6">A contained demo of the full application shell: collapsible left sidebar, main content area, and slide-out right panel. Use the chevron at the top of the sidebar to collapse/expand it, and the Filters button or external toggle to open the right panel.</p>
+
+      <!-- Toggle controls (outside the frame) -->
+      <div class="flex gap-3 mb-4">
+        <button id="shell-panel-toggle" class="btn-ghost text-sm">
+          <span class="flex items-center gap-2"><i class="ri-filter-3-line"></i> Toggle Filter Panel</span>
+        </button>
+      </div>
+
+      <!-- App Shell frame (simulated browser window) -->
+      <div class="border border-stone-200 rounded-xl overflow-hidden shadow-sm">
+
+        <!-- Fake browser chrome -->
+        <div class="bg-zinc-100 border-b border-stone-200 px-4 py-2 flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-gray-300"></span>
+          <span class="w-3 h-3 rounded-full bg-gray-300"></span>
+          <span class="w-3 h-3 rounded-full bg-gray-300"></span>
+          <span class="type-muted ml-3 text-xs">app-prototype.local/dashboard</span>
+        </div>
+
+        <!-- App Shell (fixed height container) -->
+        <div class="app-shell relative" style="height: 520px;" id="app-shell-demo">
+
+          <!-- Left Sidebar -->
+          <aside class="sidebar" id="shell-sidebar">
+            <div class="sidebar-brand">
+              <i class="ri-layout-grid-line text-xl"></i>
+              <span class="sidebar-brand-text">AppName</span>
+            </div>
+            <div class="px-3 pt-2 pb-1">
+              <button class="sidebar-toggle w-full" id="shell-sidebar-collapse">
+                <i class="ri-arrow-left-double-line" id="shell-sidebar-collapse-icon"></i>
+                <span class="sidebar-link-text text-xs" style="color: var(--control-icon-muted)">Collapse</span>
+              </button>
+            </div>
+            <nav class="flex flex-col gap-1 py-3 flex-1">
+              <span class="sidebar-section-label sidebar-label-text">Main</span>
+              <a href="#" class="sidebar-item sidebar-item-active">
+                <i class="ri-home-line"></i> <span class="sidebar-link-text">Dashboard</span>
+              </a>
+              <a href="#" class="sidebar-item">
+                <i class="ri-file-list-line"></i> <span class="sidebar-link-text">Reports</span>
+              </a>
+              <a href="#" class="sidebar-item">
+                <i class="ri-user-line"></i> <span class="sidebar-link-text">Users</span>
+              </a>
+              <a href="#" class="sidebar-item">
+                <i class="ri-calendar-line"></i> <span class="sidebar-link-text">Schedule</span>
+              </a>
+              <span class="sidebar-section-label sidebar-label-text">Admin</span>
+              <a href="#" class="sidebar-item">
+                <i class="ri-settings-3-line"></i> <span class="sidebar-link-text">Settings</span>
+              </a>
+              <a href="#" class="sidebar-item">
+                <i class="ri-question-line"></i> <span class="sidebar-link-text">Help</span>
+              </a>
+            </nav>
+          </aside>
+
+          <!-- Main Content Area -->
+          <div class="app-shell-content">
+            <header class="app-shell-header">
+              <div>
+                <h1 class="type-title text-lg">Dashboard</h1>
+                <p class="type-caption">Overview of recent activity</p>
+              </div>
+              <button class="btn-ghost text-sm" id="shell-filter-btn">
+                <span class="flex items-center gap-2"><i class="ri-filter-3-line"></i> Filters</span>
+              </button>
+            </header>
+            <main class="app-shell-body">
+              <!-- Demo content: summary cards -->
+              <div class="grid grid-cols-3 gap-4 mb-6">
+                <div class="card-standard">
+                  <p class="type-caption mb-1">Total Users</p>
+                  <p class="type-title">1,247</p>
+                  <span class="inline-positive">+12% this month</span>
+                </div>
+                <div class="card-standard">
+                  <p class="type-caption mb-1">Active Sessions</p>
+                  <p class="type-title">384</p>
+                  <span class="inline-warning">3 flagged</span>
+                </div>
+                <div class="card-standard">
+                  <p class="type-caption mb-1">Error Rate</p>
+                  <p class="type-title">0.4%</p>
+                  <span class="inline-positive">Below threshold</span>
+                </div>
+              </div>
+              <!-- Demo content: table -->
+              <div class="content-section">
+                <div class="content-section-header">Recent Activity</div>
+                <div class="content-section-body p-0">
+                  <table class="table-report">
+                    <thead>
+                      <tr>
+                        <th>User</th>
+                        <th>Action</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>Jane Smith</td><td>Login</td><td>2 min ago</td><td><span class="inline-positive">OK</span></td></tr>
+                      <tr><td>John Doe</td><td>Export report</td><td>15 min ago</td><td><span class="inline-positive">OK</span></td></tr>
+                      <tr><td>System</td><td>Backup job</td><td>1 hr ago</td><td><span class="inline-warning">Slow</span></td></tr>
+                      <tr><td>Admin</td><td>Config change</td><td>3 hr ago</td><td><span class="inline-positive">OK</span></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </main>
+          </div>
+
+          <!-- Right Panel Backdrop -->
+          <div class="panel-backdrop hidden" id="shell-panel-backdrop"></div>
+
+          <!-- Right Panel (Slide-Out) -->
+          <aside class="panel-right" id="shell-panel">
+            <div class="panel-right-header">
+              <span class="panel-right-title">Report Filters</span>
+              <button class="panel-right-close" id="shell-panel-close"><i class="ri-close-line"></i></button>
+            </div>
+            <div class="panel-right-body space-y-4">
+              <div>
+                <label class="form-label">Date Range</label>
+                <div class="relative">
+                  <select class="form-select">
+                    <option>Last 7 days</option>
+                    <option selected>Last 30 days</option>
+                    <option>This quarter</option>
+                    <option>Custom range</option>
+                  </select>
+                  <i class="ri-arrow-down-s-line absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" style="color: var(--control-icon-muted)"></i>
+                </div>
+              </div>
+              <div>
+                <label class="form-label">Region</label>
+                <div class="relative">
+                  <select class="form-select">
+                    <option>All regions</option>
+                    <option>North</option>
+                    <option>South</option>
+                  </select>
+                  <i class="ri-arrow-down-s-line absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" style="color: var(--control-icon-muted)"></i>
+                </div>
+              </div>
+              <div>
+                <p class="form-label mb-2">Status</p>
+                <div class="flex flex-col gap-2">
+                  <label class="flex items-center">
+                    <input type="checkbox" checked class="form-checkbox">
+                    <span class="form-check-label">Active</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input type="checkbox" checked class="form-checkbox">
+                    <span class="form-check-label">Warning</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input type="checkbox" class="form-checkbox">
+                    <span class="form-check-label">Error</span>
+                  </label>
+                </div>
+              </div>
+              <div>
+                <label class="form-label">Minimum Users</label>
+                <input type="number" class="form-input" placeholder="0" value="10">
+              </div>
+            </div>
+            <div class="panel-right-footer">
+              <button class="btn-primary w-full">
+                <span class="flex items-center justify-center gap-2"><i class="ri-check-line"></i> Apply Filters</span>
+              </button>
+            </div>
+          </aside>
+
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ============================================================
        CHART.JS INITIALISATION
   ============================================================ -->
   <script>
-    // Chart.js greyscale defaults
-    Chart.defaults.font.family = '"Balsamiq Sans", cursive';
-    Chart.defaults.color = '#71717A';
-    Chart.defaults.borderColor = '#E7E5E4';
+    // Read brand variables from CSS for Chart.js
+    const rootStyle = getComputedStyle(document.documentElement);
+    const cv = (name) => rootStyle.getPropertyValue(name).trim();
+
+    // Chart.js defaults — use semantic brand variables
+    Chart.defaults.font.family = `${cv('--brand-font')}, cursive`;
+    Chart.defaults.color = cv('--chart-axis-label');
+    Chart.defaults.borderColor = cv('--chart-gridline');
     Chart.defaults.plugins.legend.labels.usePointStyle = true;
 
     // Bar Chart
@@ -893,14 +1228,14 @@
         datasets: [{
           label: 'Revenue ($k)',
           data: [42, 58, 35, 67],
-          backgroundColor: '#71717A',
+          backgroundColor: cv('--chart-series-2'),
           borderRadius: 4,
         }]
       },
       options: {
         plugins: { legend: { display: false } },
         scales: {
-          y: { grid: { color: '#E7E5E4' }, beginAtZero: true },
+          y: { grid: { color: cv('--chart-gridline') }, beginAtZero: true },
           x: { grid: { display: false } }
         }
       }
@@ -914,8 +1249,8 @@
         datasets: [{
           label: 'Active Users',
           data: [120, 190, 170, 250, 220, 310],
-          borderColor: '#3F3F46',
-          backgroundColor: '#3F3F46',
+          borderColor: cv('--chart-series-1'),
+          backgroundColor: cv('--chart-series-1'),
           borderWidth: 2,
           pointRadius: 4,
           tension: 0.1,
@@ -924,7 +1259,7 @@
       options: {
         plugins: { legend: { display: false } },
         scales: {
-          y: { grid: { color: '#E7E5E4' }, beginAtZero: true },
+          y: { grid: { color: cv('--chart-gridline') }, beginAtZero: true },
           x: { grid: { display: false } }
         }
       }
@@ -937,9 +1272,9 @@
         labels: ['Hardware', 'Software', 'Services', 'Other'],
         datasets: [{
           data: [35, 30, 20, 15],
-          backgroundColor: ['#3F3F46', '#71717A', '#D1D5DB', '#E7E5E4'],
+          backgroundColor: [cv('--chart-series-1'), cv('--chart-series-2'), cv('--chart-series-3'), cv('--chart-series-4')],
           borderWidth: 1,
-          borderColor: '#FFFFFF',
+          borderColor: cv('--chart-segment-border'),
         }]
       },
       options: {
@@ -1023,6 +1358,59 @@
       document.getElementById('modal-procedural').classList.add('hidden');
       updateModal();
     });
+  </script>
+
+  <!-- ============================================================
+       APP SHELL JAVASCRIPT
+  ============================================================ -->
+  <script>
+    // Sidebar toggle (collapse / expand)
+    const sidebar = document.getElementById('shell-sidebar');
+    const collapseIcon = document.getElementById('shell-sidebar-collapse-icon');
+
+    function toggleSidebar() {
+      sidebar.classList.toggle('sidebar-collapsed');
+      const isCollapsed = sidebar.classList.contains('sidebar-collapsed');
+
+      // Toggle visibility of text elements
+      sidebar.querySelectorAll('.sidebar-link-text, .sidebar-brand-text, .sidebar-label-text').forEach(el => {
+        el.style.display = isCollapsed ? 'none' : '';
+      });
+
+      // Flip the collapse arrow icon
+      collapseIcon.className = isCollapsed
+        ? 'ri-arrow-right-double-line'
+        : 'ri-arrow-left-double-line';
+    }
+
+    document.getElementById('shell-sidebar-collapse').addEventListener('click', toggleSidebar);
+
+    // Right panel toggle (slide in / out)
+    const panel = document.getElementById('shell-panel');
+    const backdrop = document.getElementById('shell-panel-backdrop');
+
+    function openPanel() {
+      panel.classList.add('panel-open');
+      backdrop.classList.remove('hidden');
+    }
+
+    function closePanel() {
+      panel.classList.remove('panel-open');
+      backdrop.classList.add('hidden');
+    }
+
+    function togglePanel() {
+      if (panel.classList.contains('panel-open')) {
+        closePanel();
+      } else {
+        openPanel();
+      }
+    }
+
+    document.getElementById('shell-panel-toggle').addEventListener('click', togglePanel);
+    document.getElementById('shell-filter-btn').addEventListener('click', togglePanel);
+    document.getElementById('shell-panel-close').addEventListener('click', closePanel);
+    document.getElementById('shell-panel-backdrop').addEventListener('click', closePanel);
   </script>
 
 </body>

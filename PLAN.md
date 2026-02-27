@@ -14,8 +14,8 @@ planStatus:
     - balsamiq
     - tailwind
   created: "2026-02-21"
-  updated: "2026-02-26T00:00:00.000Z"
-  progress: 98
+  updated: "2026-02-27T00:00:00.000Z"
+  progress: 80
 ---
 # Prototype Wireframe Style Guide
 
@@ -155,10 +155,8 @@ A Balsamiq-inspired greyscale style guide for rapid prototyping, adapted from th
   - Large table example: 8–10 rows with zebra striping, sortable column headers, inside a content section
   - Pie chart, bar chart, and line chart — all using greyscale palette, with readable labels
 - [x] **4B.3** Build **Showcase Section 4 — Content Sections & Field Rows**
-  - Two side-by-side content sections: "Personal Information" (First Name, Last Name on one row; Date of Birth) and "Address" (Street, City + State + Postcode on one row)
-  - Form fields use existing `.form-input`, `.form-label` etc. from Section 2
+  - Two side-by-side content sections: "Personal Information" and "Address"
   - Demonstrates `.field-row` for inline grouping (First + Last, City + State + Postcode)
-  - Shows responsive stacking behaviour description
 
 ### 4C — CDN Boilerplate Update
 
@@ -170,7 +168,83 @@ A Balsamiq-inspired greyscale style guide for rapid prototyping, adapted from th
 - [x] **4D.1** Verify all new tokens are in `style-guide.md` before showcase references them
 - [x] **4D.2** Visual review — screenshot and confirm with user
 - [x] **4D.3** Update style guide version to `v1.1`
-- [ ] **4D.4** Commit and push
+- [x] **4D.4** Commit and push
+
+---
+
+## Phase 5: Navigation & Configuration Controls
+
+> Goal: Add collapsible left sidebar navigation, a right-side slide-out configuration panel, a full "app shell" showcase section, and refactor all tokens to use fully semantic names so a prototype can be re-branded by changing values in one place.
+
+### 5A — Style Guide: Sidebar & Panel Tokens
+
+- [x] **5A.1** Add **Left Sidebar** tokens to `style-guide.md` — `.sidebar`
+  - Collapsible: expanded (icons + labels) / collapsed (icons only)
+  - Semantic classes: `.sidebar`, `.sidebar-collapsed`, `.sidebar-item`, `.sidebar-item-active`, `.sidebar-section-label`
+  - Greyscale palette (dark background like `zinc-800`, white/light text)
+  - Responsive rule: on tablet and below, sidebar collapses to an overlay panel triggered by a hamburger icon
+- [x] **5A.2** Add **Right Panel (Slide-Out)** tokens to `style-guide.md` — `.panel-right`
+  - Slide-out panel for contextual configuration/filters — overlays content, doesn't push it
+  - Can be persistent (pinned open) or dismissable (slide out and close)
+  - Convention: document `panel-default-open` as a prototype-level flag (not CSS)
+  - Semantic classes: `.panel-right`, `.panel-right-header`, `.panel-right-body`, `.panel-right-footer`
+  - Triggered by a filter/settings icon in the content area or top bar
+  - Responsive rule: same overlay behaviour on all screen sizes (it's already an overlay)
+- [x] **5A.3** Add **App Shell** layout tokens to `style-guide.md` — `.app-shell`
+  - Container that composes sidebar + main content + optional right panel
+  - Semantic classes: `.app-shell`, `.app-shell-sidebar`, `.app-shell-content`, `.app-shell-panel`
+  - Defines the overall page structure for any multi-screen prototype
+
+### 5B — Showcase: App Shell Section
+
+- [x] **5B.1** Build **Showcase Section 7 — App Shell** (added as Section 7 at the end)
+  - Full app shell demo inside a contained, fixed-height frame (simulates a browser window)
+  - Left sidebar with 6 nav items (icons + labels), one active, collapsible
+  - Main content area with dashboard cards + activity table
+  - Right panel slide-out with filter controls (dropdowns, checkboxes, number input)
+  - Toggle buttons to expand/collapse sidebar and show/hide right panel
+  - Internal collapse button in sidebar footer
+- [x] **5B.2** Existing sections 1–6 remain unchanged — app shell is a standalone showcase section
+
+### 5C — Review
+
+- [x] **5C.1** Verify all new tokens are in `style-guide.md` before showcase references them — all sidebar, panel, and app shell classes verified consistent
+- [ ] **5C.2** Visual review — screenshot and confirm with user (deferred to after 5D refactor)
+
+### 5D — Semantic Token Refactor (Re-brand Ready)
+
+> Goal: Make it possible to copy a prototype into a new project, change brand colours and fonts in **one place** (the Tailwind config or a CSS variables block), and have the entire app re-skin correctly.
+
+> **⚠ Technical note — Tailwind CDN + CSS custom properties:**
+> Tailwind's CDN mode generates utility classes like `bg-emerald-700` at build time. You can't write `bg-[var(--brand-primary)]` in a `@layer components` block and have it work reliably — the CDN doesn't know to generate those dynamic classes.
+>
+> **Preferred approach:** Define brand values as CSS custom properties (`:root { --brand-primary: #047857; }`), then in the `<style type="text/tailwindcss">` `@layer components` block, use **raw CSS** instead of Tailwind utilities for colour/font properties. For example: `.btn-primary { background-color: var(--brand-primary); color: var(--brand-on-primary); }` instead of `@apply bg-emerald-700 text-white`. Tailwind utilities can still be used for layout, spacing, and sizing (those don't change per brand). This is a hybrid approach — Tailwind for structure, CSS variables for themeable values.
+>
+> **Alternative considered:** Extending `tailwind.config` to map CSS variables to Tailwind colour names (e.g. `primary: 'var(--brand-primary)'`). This works but means the semantic class definitions still use Tailwind colour names that look like they're hardcoded. The raw CSS approach is more explicit about what's themeable.
+
+- [x] **5D.1** Audit all semantic classes in `style-guide.md` and `showcase.html` — all component classes now use CSS variables for colours
+  - Remaining raw Tailwind colours in HTML body are showcase-level chrome (page header, browser frame) — not reusable components
+  - Chart.js initialisation reads CSS variables at runtime via `getComputedStyle`
+- [x] **5D.2** Define a **Brand Variables** block — `:root` CSS variables section added to showcase `<head>` and documented in style guide
+  - 5 brand accent variables, font variable
+  - Documented in "Brand Variables" section in `style-guide.md`
+- [x] **5D.3** Update all semantic classes to use the hybrid approach:
+  - Tailwind `@apply` for layout/spacing/sizing (e.g. `px-6 py-2.5 rounded-lg`)
+  - Raw CSS for colours (e.g. `background-color: var(--brand-primary)`)
+  - Hover states use separate selectors with `var()` references
+  - All ~60 component classes refactored
+- [x] **5D.4** Fully semantic variable naming refactor — replaced all `--grey-*` / `--white` / `--form-accent` variables with ~40 role-based names
+  - Variables named by UI purpose, not colour: `--surface-page`, `--text-heading`, `--control-border`, `--chart-series-1`, etc.
+  - Organised into groups: Surfaces, Borders, Text, Controls, Status, Charts, Tables
+  - All `@layer components` classes, Chart.js code, inline styles, and body HTML updated
+  - Style-guide.md token tables, re-brand instructions, and all documentation sections updated
+  - Verified: zero remaining old-style variable references in either file
+- [x] **5D.5** Test: user visual review confirmed — showcase renders correctly after semantic refactor
+
+### 5E — Finalise
+
+- [x] **5E.1** Update style guide version to `v1.2`
+- [ ] **5E.2** Commit and push
 
 ---
 
@@ -187,6 +261,10 @@ These require user sign-off before proceeding:
 | D5 | Chart.js as CDN chart library | Phase 4A.3 | **Decided: Chart.js** |
 | D6 | Content Section header: zinc-600 bg, white bold text, left-aligned | Phase 4A.4 | **Decided** |
 | D7 | Field Row pattern for inline related fields | Phase 4A.5 | **Decided** |
+| D8 | Left sidebar for main navigation (collapsible) | Phase 5A.1 | **Decided** |
+| D9 | Right-side slide-out panel (not sidebar) for config/filters | Phase 5A.2 | **Decided** |
+| D10 | Showcase Option B — dedicated App Shell section, existing sections untouched | Phase 5B | **Decided** |
+| D11 | Semantic token refactor with CSS variables for single-place re-branding | Phase 5D | **Decided** |
 
 ---
 
