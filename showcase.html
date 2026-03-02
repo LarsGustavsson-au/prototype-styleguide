@@ -8,10 +8,10 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Balsamiq Sans Font -->
+  <!-- Balsamiq Sans + Redacted Script Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&family=Redacted+Script:wght@300;400;700&display=swap" rel="stylesheet">
 
   <!-- Remix Icons -->
   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">
@@ -140,6 +140,16 @@
       .type-body-emphasis { @apply text-base font-bold; color: var(--text-heading); }
       .type-caption     { @apply text-sm font-normal; color: var(--text-caption); }
       .type-muted       { @apply text-sm font-normal; color: var(--text-placeholder); }
+
+      /* ── Wireframe Placeholder Text (Squiggles) ── */
+      /* Redacted Script has a smaller x-height than Balsamiq Sans, so we scale up ~35% to match visually */
+      .wire-title       { @apply font-bold; font-size: 2.025rem; color: var(--text-title); font-family: 'Redacted Script', cursive; }
+      .wire-modal-title { @apply font-bold; font-size: 1.6875rem; color: var(--text-title); font-family: 'Redacted Script', cursive; }
+      .wire-heading     { @apply font-bold; font-size: 1.5rem; color: var(--text-heading); font-family: 'Redacted Script', cursive; }
+      .wire-body        { @apply font-normal; font-size: 1.35rem; color: var(--text-body); font-family: 'Redacted Script', cursive; }
+      .wire-body-emphasis { @apply font-bold; font-size: 1.35rem; color: var(--text-heading); font-family: 'Redacted Script', cursive; }
+      .wire-caption     { @apply font-normal; font-size: 1.18rem; color: var(--text-caption); font-family: 'Redacted Script', cursive; }
+      .wire-muted       { @apply font-normal; font-size: 1.18rem; color: var(--text-placeholder); font-family: 'Redacted Script', cursive; }
 
       /* ── Text Links ── */
       .text-link       { @apply underline underline-offset-2 transition-colors duration-150; color: var(--text-body); }
@@ -362,7 +372,7 @@
           <p class="type-caption">Monitor access controls and audit logs.</p>
         </div>
 
-        <!-- Card 2 — Warning status -->
+        <!-- Card 2 — Warning status (wireframe squiggles demo) -->
         <div class="card-standard">
           <div class="flex items-start justify-between mb-3">
             <i class="ri-notification-line text-3xl type-caption"></i>
@@ -371,8 +381,8 @@
               Warning
             </span>
           </div>
-          <h4 class="type-body-emphasis mb-1">Notifications</h4>
-          <p class="type-caption">Alerts and messaging pipeline status.</p>
+          <h4 class="wire-body-emphasis mb-1">Squiggle heading text here</h4>
+          <p class="wire-caption">Some description placeholder squiggle text for this card area.</p>
         </div>
 
         <!-- Card 3 — Negative status -->
@@ -593,6 +603,37 @@
             </div>
             <span class="form-check-label">Push notifications enabled</span>
           </label>
+        </div>
+
+        <!-- Wireframe Placeholder Text (Squiggles) Demo -->
+        <div class="pt-4 border-t" style="border-color: var(--border-light);">
+          <p class="form-label mb-1">Wireframe Placeholder Text</p>
+          <p class="type-caption mb-4">Use <code class="px-1 rounded" style="background-color: var(--surface-inset);">wire-</code> classes instead of <code class="px-1 rounded" style="background-color: var(--surface-inset);">type-</code> to render squiggly placeholder lines. Type any words — more words = more squiggle. Swap to <code class="px-1 rounded" style="background-color: var(--surface-inset);">type-</code> when real copy is ready.</p>
+
+          <div class="flex flex-col gap-3 mb-4">
+            <div>
+              <span class="type-caption">wire-title:</span>
+              <h2 class="wire-title">Page title placeholder text</h2>
+            </div>
+            <div>
+              <span class="type-caption">wire-heading:</span>
+              <h3 class="wire-heading">Section heading squiggle text here</h3>
+            </div>
+            <div>
+              <span class="type-caption">wire-body:</span>
+              <p class="wire-body">A paragraph of body copy showing roughly how much content goes here in this area of the screen layout for the prototype.</p>
+            </div>
+            <div>
+              <span class="type-caption">wire-caption:</span>
+              <p class="wire-caption">Helper text or label squiggle at caption size</p>
+            </div>
+          </div>
+
+          <div>
+            <label class="form-label">Example: form field with squiggle label</label>
+            <p class="wire-caption mb-1">Some helper description squiggle text for this field</p>
+            <input type="text" placeholder="Jane Smith" class="form-input">
+          </div>
         </div>
 
         <!-- All Button Types -->

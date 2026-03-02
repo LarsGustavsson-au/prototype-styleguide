@@ -1,5 +1,5 @@
 # Prototype Wireframe Style Guide
-### v1.2 — 2026-02-27
+### v1.3 — 2026-03-02
 
 This document defines the shared visual language for wireframe prototypes. It uses a greyscale-first approach inspired by Balsamiq, with sparse colour accents for primary actions, errors, and warnings. All tokens use **semantic component classes** (e.g. `.btn-primary`, `.card-standard`). In HTML you use the semantic class name — never raw Tailwind. All colours and the brand font are defined as **CSS custom properties** (`:root` variables). To rebrand, you change the `:root` variables block — all component classes and the HTML stay untouched.
 
@@ -14,9 +14,10 @@ Add this to the `<head>` of any prototype HTML file:
 <script src="https://cdn.tailwindcss.com"></script>
 
 <!-- Balsamiq Sans Font (swap this CDN link when re-branding) -->
+<!-- Redacted Script Font (wireframe placeholder squiggles) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Balsamiq+Sans:wght@400;700&family=Redacted+Script:wght@300;400;700&display=swap" rel="stylesheet">
 
 <!-- Remix Icons -->
 <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css" rel="stylesheet">
@@ -275,6 +276,34 @@ All text uses the brand font (default: **Balsamiq Sans** via Google Fonts). This
 | `type-body-emphasis` | `text-base` | `font-bold` | `--text-heading` | Emphasized body text |
 | `type-caption` | `text-sm` | `font-normal` | `--text-caption` | Labels, helper text |
 | `type-muted` | `text-sm` | `font-normal` | `--text-placeholder` | Disabled/inactive text |
+
+### Wireframe Placeholder Text (Squiggles)
+
+For rapid prototyping, use **Redacted Script** (Google Fonts) to render text as hand-drawn squiggly lines — exactly like Balsamiq or hand-drawn wireframes. The text you type controls the *amount* of squiggle: more words = more squiggle. No need to craft real copy during early wireframing.
+
+Add the `wire-` prefix to any type class to switch it from readable text to squiggles:
+
+| Class Name | Matches | Notes |
+| --- | --- | --- |
+| `wire-title` | `type-title` | Squiggle at title size |
+| `wire-modal-title` | `type-modal-title` | Squiggle at modal title size |
+| `wire-heading` | `type-heading` | Squiggle at heading size |
+| `wire-body` | `type-body` | Squiggle at body size |
+| `wire-body-emphasis` | `type-body-emphasis` | Squiggle at bold body size |
+| `wire-caption` | `type-caption` | Squiggle at caption size |
+| `wire-muted` | `type-muted` | Squiggle at muted size |
+
+**Usage:** Type any words — they render as squiggles. Swap `wire-` for `type-` when you're ready to add real copy.
+
+```html
+<!-- Early wireframe — squiggles -->
+<h2 class="wire-title">Some title placeholder text here</h2>
+<p class="wire-body">A paragraph of description text that shows the approximate amount of content expected in this area of the screen.</p>
+
+<!-- Later — swap to real text -->
+<h2 class="type-title">Account Settings</h2>
+<p class="type-body">Manage your profile, security preferences, and notification settings.</p>
+```
 
 ---
 

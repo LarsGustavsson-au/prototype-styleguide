@@ -244,7 +244,7 @@ A Balsamiq-inspired greyscale style guide for rapid prototyping, adapted from th
 ### 5E — Finalise
 
 - [x] **5E.1** Update style guide version to `v1.2`
-- [ ] **5E.2** Commit and push
+- [x] **5E.2** Commit and push
 
 ---
 
